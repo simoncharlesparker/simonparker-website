@@ -1,0 +1,153 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for Simon Parker Therapy, PLLC. Edit values here, then run `npm --prefix tools run build` and `python3 tools/verify.py`. Anything marked 'locked' should only be changed with deliberate intent, as it is referenced in voice/branding contracts.",
+  "identity": {
+    "legal_entity": "Simon Parker Therapy, PLLC",
+    "display_name": "Simon Parker Therapy",
+    "clinician_first_name": "Simon",
+    "clinician_last_name": "Parker",
+    "clinician_full_name": "Simon Parker",
+    "clinician_credentials": "LCSW",
+    "clinician_with_credentials": "Simon Parker, LCSW",
+    "clinician_pronouns": "he/him"
+  },
+  "registry": {
+    "npi": "1669077996",
+    "taxonomy_code": "1041C0700X",
+    "taxonomy_label": "Social Worker, Clinical"
+  },
+  "licenses": [
+    {
+      "state": "Pennsylvania",
+      "abbr": "PA",
+      "profession": "LCSW",
+      "number": "CW024575"
+    },
+    {
+      "state": "Texas",
+      "abbr": "TX",
+      "profession": "LCSW",
+      "number": "103592"
+    },
+    {
+      "state": "California",
+      "abbr": "CA",
+      "profession": "LCSW",
+      "number": "95685"
+    }
+  ],
+  "contact": {
+    "email": "info@simonparker.com",
+    "phone": "(412) 444-8753",
+    "phone_is_placeholder": false,
+    "office_city": "Pittsburgh",
+    "office_state": "Pennsylvania",
+    "office_state_abbr": "PA",
+    "office_open_from": "summer 2026",
+    "website": "simonparker.com",
+    "base_url": "https://simonparker.com"
+  },
+  "fees": {
+    "consultation_minutes": 15,
+    "consultation_price_usd": 0,
+    "consultation_label": "Free 15-minute consultation",
+    "session_50min_price_usd": 160,
+    "session_50min_label": "50-minute individual session",
+    "currency": "USD",
+    "out_of_network_only": true,
+    "sliding_scale_slots": 2
+  },
+  "training": {
+    "_comment": "B2B training line: CBT/REBT skills for high-stress frontline teams. Page = website/for-teams.html. Nav label = 'For businesses'.",
+    "nav_label": "For businesses",
+    "page_url": "for-teams.html",
+    "positioning_tagline": "Practical skills for thinking clearly under pressure.",
+    "workshop_half_day_price_usd": 3500,
+    "workshop_half_day_hours": 3,
+    "workshop_full_day_price_usd": 6500,
+    "workshop_full_day_hours": 6,
+    "workshop_max_participants": 25,
+    "program_name": "Thinking Clearly Under Pressure",
+    "program_sessions": 6,
+    "program_session_minutes": 90,
+    "program_cadence": "weekly",
+    "program_group_size_max": 12,
+    "program_price_usd": 9500,
+    "program_pricing_note": "First-cohort pricing. This rate is held for the first two cohorts so we can build a referenceable case. Subsequent cohorts will be priced to reflect the nine hours of custom clinical work, the between-session practice support, and the written close-out brief.",
+    "delivery_remote_available": false,
+    "delivery_remote_by_exception": true,
+    "delivery_mode_note": "In-person by default, at the client's site or an off-site venue of their choosing. Remote delivery considered by exception for teams that are genuinely distributed and cannot gather in one place. Teams in the Pittsburgh metro pay no travel charge.",
+    "delivery_in_person_metro": "Pittsburgh metro",
+    "travel_policy": "For teams outside the Pittsburgh metro, travel and lodging are arranged at cost and agreed in writing before booking.",
+    "audiences": [
+      "Fire, EMS, and law enforcement",
+      "Hospitals and frontline clinical teams",
+      "Trading floors and front-office finance",
+      "Law firms and legal operations"
+    ],
+    "scoping_call_minutes": 15
+  },
+  "niche": {
+    "track1_short": "adults in high-pressure roles",
+    "track1_long": "adults in high-pressure roles who look fine on the outside but feel stretched thin underneath",
+    "track2_short": "veterans, active-duty service members, and first responders",
+    "track2_long": "veterans, active-duty service members, and first responders carrying the weight of service",
+    "combined_short": "adults in high-pressure roles, or going through a stressful chapter",
+    "combined_long": "adults in high-pressure roles, or going through a stressful chapter. Deep specialist experience with veterans, active-duty service members, and first responders."
+  },
+  "frameworks": {
+    "cbc": {
+      "_note": "Internal key remains 'cbc' for backward compatibility with build scripts; publicly the framework is now presented as Beckian CBT combined with REBT.",
+      "acronym": "CBT",
+      "name": "Cognitive Behavioral Therapy",
+      "short": "Beckian CBT combined with REBT",
+      "attribution": "Beck and Ellis",
+      "citation": "Beck, J. S. (2021). Cognitive Behavior Therapy: Basics and Beyond (3rd ed.). Guilford Press. Ellis, A., & Dryden, W. (2007). The Practice of Rational Emotive Behavior Therapy (2nd ed.). Springer."
+    },
+    "ipt": {
+      "acronym": "IPT",
+      "name": "Interpersonal Psychotherapy",
+      "short": "IPT (Interpersonal Psychotherapy)",
+      "attribution": "Weissman, Markowitz, and Klerman",
+      "citation": "Weissman, M. M., Markowitz, J. C., & Klerman, G. L. (2018). The Guide to Interpersonal Psychotherapy: Updated and Expanded Edition. Oxford University Press."
+    }
+  },
+  "voice_paragraph_locked": "I'm a British therapist, and let's be honest, British people are not exactly famous for spilling our feelings. If talking openly feels unnatural, that's okay. I'm used to it. You won't get judgment or a wall of therapist-speak here. Just a thoughtful space to be honest, reflect, and grow.",
+  "taglines": {
+    "hero_short": "Therapy for adults in high-pressure roles, or going through a stressful chapter.",
+    "footer_tagline": "Therapy for adults in high-pressure roles, or going through a stressful chapter. Telehealth across Pennsylvania, Texas, and California. In-person in Pittsburgh from summer 2026.",
+    "meta_description": "Therapy with Simon Parker, LCSW. Ten years specializing in trauma and PTSD. Telehealth across Pennsylvania, Texas, and California. In-person in Pittsburgh from summer 2026."
+  },
+  "crisis": {
+    "line_short": "If you are in crisis, call or text 988.",
+    "line_full": "In a crisis? Call or text 988 (Suicide and Crisis Lifeline). Veterans: press 1 after 988 for the Veterans Crisis Line. If you are in immediate danger, call 911.",
+    "veterans_note": "Veterans: press 1 after 988 for the Veterans Crisis Line."
+  },
+  "billing": {
+    "accepts_insurance": false,
+    "can_provide_superbill": true,
+    "payment_methods": [
+      "Credit card",
+      "Debit card",
+      "HSA/FSA card"
+    ],
+    "late_cancel_hours": 24,
+    "late_cancel_fee_usd": 160,
+    "no_show_fee_usd": 160,
+    "good_faith_estimate_required": true
+  },
+  "cpt_codes": {
+    "diagnostic_eval": "90791",
+    "individual_45min": "90834",
+    "individual_60min": "90837",
+    "family_with_patient": "90847",
+    "family_without_patient": "90846",
+    "crisis_first_60min": "90839",
+    "crisis_additional_30min": "90840"
+  },
+  "brand": {
+    "primary_font": "Source Serif Pro",
+    "ui_font": "Inter",
+    "copyright_holder": "Simon Parker Therapy, PLLC",
+    "copyright_year_start": 2026
+  }
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get in touch | Simon Parker Therapy</title>
+<meta name="description" content="Request a free 15-minute consultation with Simon Parker, LCSW. Telehealth in PA, TX, CA; in-person in Pittsburgh from summer 2026.">
+<link rel="canonical" href="https://simonparker.com/contact.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:title" content="Get in touch | Simon Parker Therapy">
+<meta property="og:description" content="Request a free 15-minute consultation with Simon Parker, LCSW.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://simonparker.com/contact.html">
+<meta property="og:image" content="https://simonparker.com/images/og-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!--@block:nav-->
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html" class="brand">Simon Parker Therapy</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" onclick="this.nextElementSibling.classList.toggle('open');this.setAttribute('aria-expanded',this.nextElementSibling.classList.contains('open'));">Menu</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="approach.html">Approach</a></li>
+        <li><a href="fees.html">Fees</a></li>
+        <li><a href="for-teams.html">For businesses</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html" class="active nav-cta">Get in touch</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!--/@block:nav-->
+
+<main>
+  <div class="container">
+    <div class="page-header">
+      <div class="eyebrow">Get in touch</div>
+      <h1>Let's see if we're a good fit.</h1>
+    </div>
+
+    <div class="prose">
+      <p>Use the short form below to request a free 15-minute consultation. I'll reply within two business days to find a time. There's no obligation to book. The consultation is to help us both decide whether to work together. If you'd rather email directly or phone, details are on the right.</p>
+    </div>
+
+    <div class="band-alt">
+      <div>
+        <h2>Request a consultation.</h2>
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form" novalidate>
+          <!-- Web3Forms access key. Rotate via your Web3Forms account at web3forms.com. -->
+          <input type="hidden" name="access_key" value="e53f7f0e-3150-4a5f-a35c-8c7232443cc0">
+          <input type="hidden" name="subject" value="New consultation enquiry from simonparker.com">
+          <input type="hidden" name="from_name" value="Simon Parker Therapy website">
+          <input type="hidden" name="redirect" value="https://simonparker.com/thank-you.html">
+
+          <!-- Honeypot: visually hidden. Bots fill it in; real users never see it. -->
+          <label class="hp" aria-hidden="true">
+            Please leave this field empty
+            <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off">
+          </label>
+
+          <label for="cf-name">Your name <span class="required" aria-hidden="true">*</span>
+            <input id="cf-name" name="name" type="text" required autocomplete="name" maxlength="120">
+          </label>
+
+          <label for="cf-email">Email <span class="required" aria-hidden="true">*</span>
+            <input id="cf-email" name="email" type="email" required autocomplete="email" maxlength="254">
+          </label>
+
+          <label for="cf-phone">Phone (optional)
+            <input id="cf-phone" name="phone" type="tel" autocomplete="tel" maxlength="32">
+          </label>
+
+          <label for="cf-state">Which state do you live in? <span class="required" aria-hidden="true">*</span>
+            <select id="cf-state" name="state" required>
+              <option value="">Please choose</option>
+              <option>Pennsylvania</option>
+              <option>Texas</option>
+              <option>California</option>
+              <option>Somewhere else</option>
+            </select>
+          </label>
+          <p class="form-note">PA, TX, and CA are where I'm licensed to provide therapy. If you're enquiring about team training or have a general question, pick "Somewhere else".</p>
+
+          <label for="cf-message">What brings you in? <span class="required" aria-hidden="true">*</span>
+            <textarea id="cf-message" name="message" rows="6" required minlength="10" maxlength="2000" placeholder="A few sentences is plenty. You don't need to explain everything."></textarea>
+          </label>
+
+          <fieldset>
+            <legend>Best way to reach you</legend>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="contact_method" value="email" checked> Email</label>
+              <label class="radio-option"><input type="radio" name="contact_method" value="phone"> Phone</label>
+              <label class="radio-option"><input type="radio" name="contact_method" value="either"> Either is fine</label>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn btn-primary">Send message</button>
+
+          <p class="form-note">I'll reply within two business days to arrange a free <!--@c:training_scoping_minutes-->15<!--/@c-->-minute call. Please don't share sensitive medical details in this first message. We'll cover history on the call, and clinical correspondence moves to the secure SimplePractice portal once we've agreed to work together. By sending this you agree to the <a href="privacy.html">privacy policy</a>.</p>
+        </form>
+      </div>
+      <div>
+        <h2>Or reach me directly.</h2>
+        <div class="direct-contact">
+          <h3>Prefer email or phone?</h3>
+          <p>You don't have to use the form. A two-line email or a voicemail is just as welcome.</p>
+          <div class="big-cta">
+            <a href="mailto:info@simonparker.com?subject=Consultation%20enquiry" class="btn btn-primary">Email <!--@c:email-->info@simonparker.com<!--/@c--></a>
+          </div>
+        </div>
+        <ul class="info-list sp-top-lg">
+          <li><span class="label">Phone</span><span class="value"><a href="tel:+14124448753"><!--@c:phone-->(412) 444-8753<!--/@c--></a></span></li>
+          <li><span class="label">Email</span><span class="value"><a href="mailto:info@simonparker.com"><!--@c:email-->info@simonparker.com<!--/@c--></a></span></li>
+          <li><span class="label">Office (from <!--@c:office_open_from-->summer 2026<!--/@c-->)</span><span class="value"><!--@c:office_city-->Pittsburgh<!--/@c-->, Pennsylvania</span></li>
+          <li><span class="label">Hours</span><span class="value">Mon–Thu, 9am–6pm ET</span></li>
+          <li><span class="label">Licensed</span><span class="value">PA · TX · CA (telehealth)</span></li>
+        </ul>
+        <p class="form-note">If you'd rather skip straight to the secure SimplePractice client portal once we've agreed to work together, email or phone me and I'll send a portal invitation.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h3>In a crisis?</h3>
+      <p>This practice is not a crisis service. If you are in crisis, call or text <a href="tel:988">988</a> (Suicide and Crisis Lifeline), call 911, or go to your nearest emergency department. Veterans: press 1 after 988 for the Veterans Crisis Line.</p>
+    </div>
+  </div>
+</main>
+
+<!--@block:footer-->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3>Simon Parker Therapy, PLLC</h3>
+        <p>Therapy for adults in high-pressure roles, or going through a stressful chapter. Telehealth across Pennsylvania, Texas, and California. In-person in Pittsburgh from summer 2026.</p>
+      </div>
+      <div>
+        <h3>Explore</h3>
+        <a href="about.html">About</a>
+        <a href="approach.html">Approach</a>
+        <a href="fees.html">Fees</a>
+        <a href="for-teams.html">For businesses</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div>
+        <h3>Licenses</h3>
+        <span class="footer-item">Pennsylvania LCSW CW024575</span>
+        <span class="footer-item">Texas LCSW 103592</span>
+        <span class="footer-item">California LCSW 95685</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Simon Parker Therapy, PLLC. All rights reserved.</div>
+      <div>In a crisis? Call or text <a href="tel:988">988</a> (Suicide &amp; Crisis Lifeline).</div>
+    </div>
+  </div>
+</footer>
+<!--/@block:footer-->
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+# Netlify _headers file.
+# Applies sensible security headers to every URL served from the site.
+# Full docs: https://docs.netlify.com/routing/headers/
+
+/*
+  # Tell browsers this site should only ever be loaded over HTTPS,
+  # for a year, including subdomains. `preload` makes it eligible for
+  # inclusion in the browser-baked HSTS preload list.
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Stop other sites from framing this one (clickjacking defence).
+  X-Frame-Options: DENY
+
+  # Stop browsers from MIME-sniffing a response away from its declared type.
+  X-Content-Type-Options: nosniff
+
+  # Send the origin of referring requests but not the full path / query.
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Opt out of features we do not and will not use.
+  # `interest-cohort=()` opts out of Google Topics/FLoC for the whole site.
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+  # Content Security Policy.
+  #   default-src 'self'                            Only same-origin by default.
+  #   style-src 'self' 'unsafe-inline' fonts.googleapis.com
+  #                                                 Same-origin CSS plus the Google
+  #                                                 Fonts stylesheet and the small
+  #                                                 number of inline style attributes
+  #                                                 used for button margins.
+  #   font-src 'self' fonts.gstatic.com             Google Fonts webfont files.
+  #   img-src 'self' data:                          Local images + inline SVG data: URIs.
+  #   script-src 'self' 'unsafe-inline'             Only the inline nav-toggle onclick.
+  #                                                 No external JS is loaded anywhere.
+  #   connect-src 'self' api.web3forms.com          AJAX/fetch to Web3Forms for the contact form.
+  #   form-action 'self' api.web3forms.com          Submitting <form> to Web3Forms.
+  #   frame-ancestors 'none'                        Not embeddable in iframes.
+  #   base-uri 'self'                               Lock down <base href> hijacking.
+  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
+
+# Cache static assets aggressively; HTML for a short time only (so edits
+# appear quickly after a deploy).
+/*.css
+  Cache-Control: public, max-age=604800
+/*.svg
+  Cache-Control: public, max-age=604800
+/images/*
+  Cache-Control: public, max-age=2592000
+
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate

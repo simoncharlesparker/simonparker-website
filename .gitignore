@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+
+# Personal / non-website files (kept locally, not tracked in the website repo)
+PROJECT_README.md
+Practice_Voice_and_Bio.md
+Simon_Parker_Therapy_Practice_Tracker.xlsx
+Security_Reminders.ics
+clinical_forms/
+compliance/
+
+# Local helper docs (not part of the website)
+GitHub_Setup.md
+
+# Claude Code session metadata
+.claude/

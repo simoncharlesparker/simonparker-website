@@ -1,0 +1,23 @@
+# Netlify deploy configuration for Simon Parker Therapy.
+#
+# The site is a static HTML folder — `website/` is the publish directory.
+# Netlify handles HTTPS, www <-> apex redirects, and static file serving
+# automatically once a custom domain is configured in the dashboard.
+#
+# Everything else Simon might want to configure (branch previews,
+# build plugins, environment variables) can be added here later.
+
+[build]
+  publish = "website"
+  # No build step needed: HTML is checked in as-is. If a build pipeline
+  # is added later (e.g. running `node tools/build_website.js` on push),
+  # set `command = "node tools/build_website.js"` here.
+  command = ""
+
+# Send Netlify's default catch-all to the standard 404 rather than the
+# generic "page not found" page. (Optional — only fires if a 404.html
+# is ever added; safe to leave in place otherwise.)
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
