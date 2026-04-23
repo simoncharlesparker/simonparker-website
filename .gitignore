@@ -1,3 +1,13 @@
+# Credentials and secrets — NEVER commit
+*Token*
+*token*
+*.key
+*.pem
+.env
+.env.*
+GitHub Codes.docx
+Token.docx
+
 # macOS
 .DS_Store
 
