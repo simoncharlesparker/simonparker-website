@@ -21,7 +21,7 @@ import sys
 import zipfile
 import subprocess
 
-ROOT = Path("/sessions/great-busy-edison/mnt/SimonParkerTherapy")
+ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "website"
 COMP = ROOT / "compliance"
 CLIN = ROOT / "clinical_forms"
