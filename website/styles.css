@@ -155,6 +155,15 @@ a:hover { border-color: var(--accent-dk); }
   margin: 8px 0 28px;
 }
 
+.hero-subtitle {
+  font-family: 'Lora', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: var(--text-dim);
+  line-height: 1.4;
+  margin: 12px 0 24px;
+}
+
 .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
 
 .btn {
