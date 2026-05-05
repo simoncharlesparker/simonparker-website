@@ -161,7 +161,7 @@ a:hover { border-color: var(--accent-dk); }
   font-size: clamp(1.1rem, 2vw, 1.3rem);
   color: var(--text-dim);
   line-height: 1.4;
-  margin: 12px 0 32px;
+  margin: 12px 0 40px;
 }
 
 .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
