@@ -20,34 +20,75 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Simon Parker",
-  "honorificSuffix": "LCSW",
-  "jobTitle": "Licensed Clinical Social Worker",
-  "description": "British-trained, US-licensed therapist specialising in trauma and PTSD. Ten years of clinical work with adults, including six years at the VA.",
-  "url": "https://simonparker.com/about.html",
-  "image": "https://simonparker.com/images/simon-parker-portrait.jpg",
-  "worksFor": {
-    "@type": "ProfessionalService",
-    "name": "Simon Parker Therapy, PLLC",
-    "url": "https://simonparker.com/"
-  },
-  "alumniOf": [
-    { "@type": "CollegeOrUniversity", "name": "Imperial College London" },
-    { "@type": "CollegeOrUniversity", "name": "University of Southern California" }
-  ],
-  "hasCredential": [
-    { "@type": "EducationalOccupationalCredential", "credentialCategory": "license", "name": "Pennsylvania LCSW CW024575" },
-    { "@type": "EducationalOccupationalCredential", "credentialCategory": "license", "name": "Texas LCSW 103592" },
-    { "@type": "EducationalOccupationalCredential", "credentialCategory": "license", "name": "California LCSW 95685" }
-  ],
-  "knowsAbout": [
-    "Cognitive Behavioral Therapy",
-    "Rational Emotive Behavior Therapy",
-    "Interpersonal Psychotherapy",
-    "Post-Traumatic Stress Disorder",
-    "Moral Injury",
-    "Complex Trauma"
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://simonparker.com/#simon",
+      "name": "Simon Parker",
+      "honorificSuffix": "LCSW",
+      "jobTitle": "Licensed Clinical Social Worker",
+      "description": "British-trained, US-licensed therapist specialising in trauma and PTSD. Ten years of clinical work with adults, including six years at the VA.",
+      "url": "https://simonparker.com/about.html",
+      "image": "https://simonparker.com/images/simon-parker-portrait.jpg",
+      "telephone": "+1-412-444-8753",
+      "email": "info@simonparker.com",
+      "nationality": "British",
+      "knowsLanguage": "English",
+      "worksFor": { "@id": "https://simonparker.com/#practice" },
+      "alumniOf": [
+        { "@type": "CollegeOrUniversity", "name": "Imperial College London" },
+        { "@type": "CollegeOrUniversity", "name": "University of Southern California" }
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "Pennsylvania LCSW",
+          "identifier": "CW024575"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "Texas LCSW",
+          "identifier": "103592"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "California LCSW",
+          "identifier": "95685"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "degree",
+          "name": "Master of Social Work (MSW)",
+          "recognizedBy": { "@type": "CollegeOrUniversity", "name": "University of Southern California" }
+        }
+      ],
+      "knowsAbout": [
+        "Cognitive Behavioral Therapy",
+        "Rational Emotive Behavior Therapy",
+        "Interpersonal Psychotherapy",
+        "Post-Traumatic Stress Disorder",
+        "Moral Injury",
+        "Complex Trauma",
+        "Anxiety",
+        "Burnout",
+        "Depression"
+      ],
+      "identifier": [
+        { "@type": "PropertyValue", "propertyID": "NPI", "value": "1669077996" }
+      ]
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://simonparker.com/about.html#profilepage",
+      "url": "https://simonparker.com/about.html",
+      "name": "About Simon Parker, LCSW",
+      "isPartOf": { "@id": "https://simonparker.com/#website" },
+      "about": { "@id": "https://simonparker.com/#simon" },
+      "mainEntity": { "@id": "https://simonparker.com/#simon" }
+    }
   ]
 }
 </script>

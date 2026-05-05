@@ -22,35 +22,191 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Simon Parker Therapy, PLLC",
-  "description": "Therapy for anxiety, burnout, and trauma. For adults in high-pressure roles, or going through a difficult period. Ten years specializing in trauma and PTSD.",
-  "url": "https://simonparker.com/",
-  "image": "https://simonparker.com/images/og-card.jpg",
-  "telephone": "+1-412-444-8753",
-  "email": "info@simonparker.com",
-  "priceRange": "$160",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Pittsburgh",
-    "addressRegion": "PA",
-    "addressCountry": "US"
-  },
-  "areaServed": [
-    { "@type": "State", "name": "Pennsylvania" },
-    { "@type": "State", "name": "Texas" },
-    { "@type": "State", "name": "California" }
-  ],
-  "provider": {
-    "@type": "Person",
-    "name": "Simon Parker",
-    "honorificSuffix": "LCSW",
-    "jobTitle": "Licensed Clinical Social Worker",
-    "alumniOf": [
-      { "@type": "CollegeOrUniversity", "name": "Imperial College London" },
-      { "@type": "CollegeOrUniversity", "name": "University of Southern California" }
-    ]
-  }
+  "@graph": [
+    {
+      "@type": ["MedicalBusiness", "ProfessionalService"],
+      "@id": "https://simonparker.com/#practice",
+      "name": "Simon Parker Therapy, PLLC",
+      "alternateName": "Simon Parker Therapy",
+      "url": "https://simonparker.com/",
+      "logo": "https://simonparker.com/favicon.svg",
+      "image": "https://simonparker.com/images/og-card.jpg",
+      "description": "Therapy for anxiety, burnout, and trauma. For adults in high-pressure roles, or going through a difficult period. Ten years specializing in trauma and PTSD. Telehealth in PA, TX, and CA.",
+      "telephone": "+1-412-444-8753",
+      "email": "info@simonparker.com",
+      "priceRange": "$160",
+      "currenciesAccepted": "USD",
+      "paymentAccepted": "Cash, Credit Card, HSA, FSA",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Pittsburgh",
+        "addressRegion": "PA",
+        "postalCode": "15228",
+        "addressCountry": "US"
+      },
+      "areaServed": [
+        { "@type": "State", "name": "Pennsylvania" },
+        { "@type": "State", "name": "Texas" },
+        { "@type": "State", "name": "California" },
+        { "@type": "City", "name": "Pittsburgh", "containedInPlace": { "@type": "State", "name": "Pennsylvania" } },
+        { "@type": "City", "name": "Mt Lebanon", "containedInPlace": { "@type": "State", "name": "Pennsylvania" } },
+        { "@type": "City", "name": "Upper St Clair", "containedInPlace": { "@type": "State", "name": "Pennsylvania" } },
+        { "@type": "City", "name": "Bethel Park", "containedInPlace": { "@type": "State", "name": "Pennsylvania" } },
+        { "@type": "City", "name": "Sewickley", "containedInPlace": { "@type": "State", "name": "Pennsylvania" } },
+        { "@type": "City", "name": "Fox Chapel", "containedInPlace": { "@type": "State", "name": "Pennsylvania" } }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "https://schema.org/Friday",
+          "opens": "09:00",
+          "closes": "17:00"
+        }
+      ],
+      "founder": { "@id": "https://simonparker.com/#simon" },
+      "employee": { "@id": "https://simonparker.com/#simon" },
+      "knowsAbout": [
+        "Cognitive Behavioral Therapy",
+        "Rational Emotive Behavior Therapy",
+        "Interpersonal Psychotherapy",
+        "Post-Traumatic Stress Disorder",
+        "Complex Trauma",
+        "Moral Injury",
+        "Anxiety",
+        "Burnout",
+        "Depression"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Therapy services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Free 15-minute consultation",
+              "description": "A short conversation to hear what's bringing you in and decide together whether to book an initial session.",
+              "provider": { "@id": "https://simonparker.com/#practice" }
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "160",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Anxiety therapy",
+              "description": "For overthinking, a head that won't switch off, the cost of always being 'on.'",
+              "serviceType": "Psychotherapy",
+              "provider": { "@id": "https://simonparker.com/#practice" }
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "160",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Trauma and PTSD therapy",
+              "description": "Including combat-related PTSD, moral injury, and complex trauma.",
+              "serviceType": "Psychotherapy",
+              "provider": { "@id": "https://simonparker.com/#practice" }
+            }
+          },
+          {
+            "@type": "Offer",
+            "price": "160",
+            "priceCurrency": "USD",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Burnout therapy",
+              "description": "For adults in high-pressure roles, or going through a difficult period.",
+              "serviceType": "Psychotherapy",
+              "provider": { "@id": "https://simonparker.com/#practice" }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://simonparker.com/#simon",
+      "name": "Simon Parker",
+      "honorificSuffix": "LCSW",
+      "jobTitle": "Licensed Clinical Social Worker",
+      "description": "British-trained, US-licensed LCSW. Ten years of clinical work with adults, including six years at the VA treating combat-related PTSD, moral injury, and complex trauma.",
+      "url": "https://simonparker.com/about.html",
+      "image": "https://simonparker.com/images/simon-parker-portrait.jpg",
+      "telephone": "+1-412-444-8753",
+      "email": "info@simonparker.com",
+      "nationality": "British",
+      "knowsLanguage": "English",
+      "worksFor": { "@id": "https://simonparker.com/#practice" },
+      "alumniOf": [
+        { "@type": "CollegeOrUniversity", "name": "Imperial College London" },
+        { "@type": "CollegeOrUniversity", "name": "University of Southern California" }
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "Pennsylvania LCSW",
+          "identifier": "CW024575"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "Texas LCSW",
+          "identifier": "103592"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "California LCSW",
+          "identifier": "95685"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "degree",
+          "name": "Master of Social Work (MSW)",
+          "recognizedBy": { "@type": "CollegeOrUniversity", "name": "University of Southern California" }
+        }
+      ],
+      "knowsAbout": [
+        "Cognitive Behavioral Therapy",
+        "Rational Emotive Behavior Therapy",
+        "Interpersonal Psychotherapy",
+        "Post-Traumatic Stress Disorder",
+        "Moral Injury",
+        "Complex Trauma",
+        "Anxiety",
+        "Burnout",
+        "Depression"
+      ],
+      "identifier": [
+        { "@type": "PropertyValue", "propertyID": "NPI", "value": "1669077996" }
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://simonparker.com/#website",
+      "url": "https://simonparker.com/",
+      "name": "Simon Parker Therapy",
+      "publisher": { "@id": "https://simonparker.com/#practice" },
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://simonparker.com/#webpage",
+      "url": "https://simonparker.com/",
+      "name": "Simon Parker Therapy | Anxiety, burnout, and trauma therapy",
+      "isPartOf": { "@id": "https://simonparker.com/#website" },
+      "about": { "@id": "https://simonparker.com/#practice" },
+      "primaryImageOfPage": "https://simonparker.com/images/og-card.jpg"
+    }
+  ]
 }
 </script>
 </head>

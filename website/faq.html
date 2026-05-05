@@ -20,47 +20,112 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
+  "@graph": [
     {
-      "@type": "Question",
-      "name": "Do you take my insurance?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "I am an out-of-network provider and do not bill insurance directly. I provide a monthly superbill you can submit to your insurer. Many PPO and POS plans reimburse 40% to 70% of the session fee after the out-of-network deductible is met. See the Fees page for the exact questions to ask your insurer."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does a session cost?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A standard 50-minute individual session is $160. A consultation call is free. HSA and FSA cards are accepted. A small number of reduced-fee slots are reserved for veterans, active-duty service members, first responders, and clients for whom the standard fee would be a genuine barrier."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which states are you licensed in?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Pennsylvania (LCSW CW024575), Texas (LCSW 103592), and California (LCSW 95685). I can work with you by telehealth if you are physically located in one of these states at session time."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you see clients in person or only online?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Both, eventually. Telehealth is available now across Pennsylvania, Texas, and California. In-person sessions in Pittsburgh will be available from summer 2026, once the office opens."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How long does therapy take?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "It depends on what you are working on. Focused, short-term work can move in 8 to 16 sessions. Trauma work, or longer-standing patterns, often takes longer. We will talk about this openly and I will not keep you in therapy longer than is useful to you."
-      }
+      "@type": "FAQPage",
+      "@id": "https://simonparker.com/faq.html#faqpage",
+      "url": "https://simonparker.com/faq.html",
+      "name": "FAQ | Simon Parker Therapy",
+      "isPartOf": { "@id": "https://simonparker.com/#website" },
+      "about": { "@id": "https://simonparker.com/#practice" },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you take my insurance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I am an out-of-network provider and do not bill insurance directly. I provide a monthly superbill you can submit to your insurer. Many PPO and POS plans reimburse 40% to 70% of the session fee after the out-of-network deductible is met. See the Fees page for the exact questions to ask your insurer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does a session cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A standard 50-minute individual session is $160. The initial consultation call is free. I accept HSA and FSA cards. A small number of reduced-fee slots are reserved for veterans, active-duty service members, first responders, and clients for whom the standard fee would be a genuine barrier."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which states are you licensed in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pennsylvania (LCSW CW024575), Texas (LCSW 103592), and California (LCSW 95685). I can work with you by telehealth if you are physically located in one of these states at session time. Licensure is state-based, so a client who travels outside their home state needs to let me know in advance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you see clients in person or only online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both, eventually. Telehealth is available now across Pennsylvania, Texas, and California. In-person sessions in Pittsburgh will be available from summer 2026, once the office opens."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does therapy take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on what you are working on. Focused, short-term work can move in 8 to 16 sessions. Trauma work, or longer-standing patterns, often takes longer. We will talk about this openly and I will not keep you in therapy longer than is useful to you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Beckian CBT with REBT and IPT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Beckian CBT combined with REBT focuses on the thoughts, beliefs, and behaviors keeping a problem in place. It is practical and skills-based, with particular attention to the difference between inferences (what you think happened) and evaluations (how bad you think that is), plus behavioral experiments and imagery work. Interpersonal Psychotherapy (IPT) focuses on four interpersonal problem areas: grief, role transitions, disputes, and interpersonal deficits. Both are evidence-based and I practise each on its own terms. We choose one based on what will be most useful for your situation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you do exposure therapy for PTSD?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is one option. I am trained in exposure-based trauma therapies and they have strong evidence. They also have around a 30% dropout rate in meta-analyses, because revisiting traumatic material in detail is demanding. For clients for whom that would be a barrier, I can offer Interpersonal Psychotherapy adapted for PTSD, which works on the relational and life impact of the trauma without detailed re-telling of the event. We decide together which route fits you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I'm a veteran, active-duty, or first responder. What should I expect?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I spent six years at the VA treating combat-related PTSD, complex trauma, moral injury, and suicidality, alongside active-duty service members and first responders. You will not need to translate your experience, and dark humor is fine. We will go at a pace that respects your nervous system."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "I'm in a demanding role but functioning. Is therapy really for me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. A lot of the people I work with are doing well by every external measure and quietly unraveling by every internal one. Therapy is not only for crises. It is also for the long-running version of 'something's off' that you have been managing alone for a while."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is what we talk about confidential?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, with narrow legal exceptions: imminent risk of serious harm to yourself or others, suspected abuse of a child or vulnerable adult, or a court order. I go over confidentiality in detail in the informed consent, and I am happy to talk it through at intake."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I'm in crisis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "My practice is not a crisis service. If you are in crisis, call or text 988 (Suicide and Crisis Lifeline), call 911, or go to your nearest emergency department. Veterans: press 1 after dialing 988 for the Veterans Crisis Line."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I book a first session?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Email me at info@simonparker.com or use the contact page. I will reply within two business days to arrange a free 15-minute call. We use that call to decide whether to book an initial session. There is no pressure to continue."
+          }
+        }
+      ]
     }
   ]
 }
