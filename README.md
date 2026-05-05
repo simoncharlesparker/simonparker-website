@@ -4,11 +4,15 @@ Source for [simonparker.com](https://simonparker.com), the web presence for Simo
 
 ## What's here
 
-- `website/` — the static site served to visitors (9 HTML pages, `styles.css`, images)
+- `website/` — the static site served to visitors. 9 HTML pages, `styles.css`, `robots.txt`, `sitemap.xml`, `_headers`, `favicon.svg`, and the `images/` folder (including the Open Graph card)
 - `tools/` — build and verification scripts
-  - `practice_constants.json` is the single source of truth for identity, licensing, contact, and framework details
+  - `practice_constants.json` is the single source of truth for identity, licensing, contact, framework, and fee details
+  - `practice_constants.js` and `practice_constants.py` expose the JSON to Node and Python build scripts
   - `build_website.js` re-renders shared nav and footer blocks into each HTML page
+  - `build_clinical_forms.js` generates the `.docx` files in `clinical_forms/` (intake, screeners, ROI, superbill, treatment plan, progress note)
+  - `build_docs.js` generates five `.docx` files in `compliance/` (GFE, NPP, IC, HIPAA Risk, Breach Plan). The Telehealth Consent currently lives in `compliance/` as a hand-built file; folding it into this script is a small follow-up.
   - `verify.py` runs 300+ consistency and integrity checks across the site
+- `clinical_forms/` and `compliance/` — generated `.docx` paperwork the practice uses with clients
 - `netlify.toml` — Netlify deploy configuration (publish directory is `website/`)
 
 ## Preview locally

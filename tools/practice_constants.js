@@ -59,8 +59,8 @@ const websiteFooterLicenses = licenseLines.concat([
 
 // Fee summary lines
 const feeSummary = {
-  consultation: `${C.fees.consultation_label} — ${money(C.fees.consultation_price_usd)}`,
-  short:        `${C.fees.session_50min_label} — ${money(C.fees.session_50min_price_usd)}`,
+  consultation: `${C.fees.consultation_label}: ${money(C.fees.consultation_price_usd)}`,
+  short:        `${C.fees.session_50min_label}: ${money(C.fees.session_50min_price_usd)}`,
 };
 
 // Full framework sentence used in intake / approach
