@@ -223,10 +223,11 @@ a:hover { border-color: var(--accent-dk); }
 
 /* ---------- Page header (interior pages) ---------- */
 .page-header {
-  padding: 56px 0 32px;
+  padding: 56px 0 24px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
+  margin-bottom: 36px;
 }
+.page-header h1 { margin-bottom: 12px; }
 .eyebrow {
   font-size: 0.85rem;
   letter-spacing: 0.08em;
