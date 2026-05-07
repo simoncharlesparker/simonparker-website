@@ -50,7 +50,7 @@
     "consultation_minutes": 15,
     "consultation_price_usd": 0,
     "consultation_label": "Free 15-minute consultation",
-    "session_50min_price_usd": 160,
+    "session_50min_price_usd": 185,
     "session_50min_label": "50-minute individual session",
     "currency": "USD",
     "out_of_network_only": true,
@@ -131,8 +131,8 @@
       "HSA/FSA card"
     ],
     "late_cancel_hours": 24,
-    "late_cancel_fee_usd": 160,
-    "no_show_fee_usd": 160,
+    "late_cancel_fee_usd": 185,
+    "no_show_fee_usd": 185,
     "good_faith_estimate_required": true
   },
   "cpt_codes": {

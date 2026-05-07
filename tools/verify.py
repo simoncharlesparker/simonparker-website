@@ -107,7 +107,7 @@ PAGE_SPECIFIC = {
                       "\"@type\": \"Person\""],
     "approach.html": ["Beckian CBT", "REBT", "Interpersonal Psychotherapy", "IPT",
                       "Beck and Ellis", "Weissman", "Why I do this", "fifteen years"],
-    "fees.html":     ["$160", "Good Faith Estimate", "out-of-network",
+    "fees.html":     ["$185", "Good Faith Estimate", "out-of-network",
                       "What's included", "Sliding scale",
                       "HSA and FSA", "CPT code 90834"],
     "for-teams.html":["Thinking Clearly Under Pressure", "$3,500", "$6,500", "$9,500",
@@ -182,7 +182,7 @@ section("Compliance docs")
 DOCX_MARKERS = {
     "Informed_Consent.docx":            ["Informed Consent", "CW024575", "988", "Beck and Ellis", "Weissman"],
     "Notice_of_Privacy_Practices.docx": ["Notice of Privacy Practices", "HIPAA", "HITECH"],
-    "Good_Faith_Estimate.docx":         ["Good Faith Estimate", "No Surprises Act", "$160"],
+    "Good_Faith_Estimate.docx":         ["Good Faith Estimate", "No Surprises Act", "$185"],
     "HIPAA_Security_Risk_Assessment.docx": ["Security Risk Assessment", "FileVault", "SimplePractice", "BAA"],
     "Incident_and_Breach_Response_Plan.docx": ["Incident", "Breach", "60 calendar days", "tabletop"],
 }
