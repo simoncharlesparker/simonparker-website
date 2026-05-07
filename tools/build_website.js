@@ -160,6 +160,7 @@ function replaceInline(html) {
 // we do targeted, whole-string replacements. Patterns are distinctive
 // enough that collisions with prose are unlikely.
 function replaceAttributeValues(html) {
+  const FEE_50 = C.fees.session_50min_price_usd;
   const rules = [
     // mailto: any form action or href using the practice email.
     // Matches both the current domain and the legacy simonparkertherapy.com
@@ -172,6 +173,29 @@ function replaceAttributeValues(html) {
     { from: /Trower,\s*Jones,?\s*and\s*Dryden/g, to: C.frameworks.cbc.attribution },
     { from: /Beck\s+and\s+Ellis/g, to: C.frameworks.cbc.attribution },
     { from: /Weissman,\s*Markowitz,?\s*and\s*Klerman/g, to: C.frameworks.ipt.attribution },
+    // ---- Session-fee drift prevention ----
+    // Where the $nnn 50-min session fee appears outside content that supports
+    // HTML comment markers (JSON-LD <script> bodies, og:description attribute
+    // values, FAQPage answer-text strings), these targeted rules pull the
+    // canonical value from practice_constants.json so a fee change in the
+    // SSOT fully propagates on rebuild. Any new prose location that mentions
+    // the fee should add a matching rule here.
+    //
+    // Replacement functions are used (rather than literal strings) so that
+    // the dollar sign in "$185" is never mis-parsed by String.replace as a
+    // backreference like "$1".
+    //
+    // 1) JSON-LD priceRange at the LocalBusiness/HealthAndBeautyBusiness root.
+    { from: /"priceRange":\s*"\$\d+"/g, to: () => `"priceRange": "$${FEE_50}"` },
+    // 2) JSON-LD Offer.price for paid services. The [1-9]\d+ pattern keeps
+    //    this from rewriting the free 15-minute consultation, which carries
+    //    "price": "0".
+    { from: /"price":\s*"[1-9]\d+"/g, to: () => `"price": "${FEE_50}"` },
+    // 3) og:description on fees.html: "...a flat $nnn session rate..."
+    { from: /flat\s+\$\d+\s+session\s+rate/g, to: () => `flat $${FEE_50} session rate` },
+    // 4) FAQPage answer-text on faq.html:
+    //    "...A standard 50-minute individual session is $nnn..."
+    { from: /(\d+-minute\s+individual\s+session\s+is\s+)\$\d+/g, to: (_m, prefix) => `${prefix}$${FEE_50}` },
   ];
   let out = html;
   for (const r of rules) out = out.replace(r.from, r.to);

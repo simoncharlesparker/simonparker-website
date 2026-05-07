@@ -543,6 +543,153 @@ function irpChildren() {
   ];
 }
 
+// ---------- 6) Telehealth Consent ----------
+function telehealthChildren() {
+  const preSessionTable = new Table({
+    width: { size: CONTENT_WIDTH, type: WidthType.DXA },
+    columnWidths: [4680, 4680],
+    rows: [
+      'Client full legal name',
+      'Date of birth',
+      'Primary state of residence',
+      'Address for typical telehealth session',
+      'Phone (used as backup if video fails)',
+      'Local emergency contact — name',
+      'Local emergency contact — relationship',
+      'Local emergency contact — phone',
+      'Nearest emergency department — name',
+      'Nearest emergency department — phone',
+    ].map(label => new TableRow({ children: [
+      new TableCell({
+        borders: { top: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' }, bottom: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' }, left: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' }, right: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' } },
+        width: { size: 4680, type: WidthType.DXA },
+        shading: { fill: 'F2EEE6', type: ShadingType.CLEAR },
+        margins: { top: 80, bottom: 80, left: 120, right: 120 },
+        children: [new Paragraph({ children: [new TextRun({ text: label, bold: true })] })],
+      }),
+      new TableCell({
+        borders: { top: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' }, bottom: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' }, left: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' }, right: { style: BorderStyle.SINGLE, size: 4, color: 'CCCCCC' } },
+        width: { size: 4680, type: WidthType.DXA },
+        margins: { top: 80, bottom: 80, left: 120, right: 120 },
+        children: [new Paragraph({ children: [new TextRun('')] })],
+      }),
+    ] })),
+  });
+
+  return [
+    h1('Telehealth Informed Consent'),
+    p(C.identity.legal_entity),
+    p([
+      new TextRun({ text: 'Version 1.0 — effective ', bold: true }),
+      new TextRun('August 1, 2026. Reviewed annually.'),
+    ]),
+    p(`This document describes how telehealth services are delivered by ${C.identity.legal_entity} and asks for your written consent before we begin. Read it alongside the Informed Consent for Psychotherapy and the Notice of Privacy Practices. Where this document and the Informed Consent for Psychotherapy address the same topic, both apply; the more specific requirement controls.`),
+
+    h2('1. What telehealth is'),
+    p('"Telehealth" means the delivery of health-related services through real-time, two-way audio and video technology, when you and I are in different physical locations. In this practice, telehealth is provided through a HIPAA-compliant video platform (currently SimplePractice) that you reach from a secure link sent to your client portal.'),
+
+    h2('2. Provider, credentials, and licensure'),
+    p('Telehealth services in this practice are provided by:'),
+    bullet(C.identity.clinician_with_credentials),
+    bullet(`NPI ${C.registry.npi}`),
+    ...C.licenses.map(l => bullet(`${l.state} ${l.profession} ${l.number}`)),
+    p('I can provide telehealth only when you are physically located within a state where I hold an active license at the time of the session. It is my responsibility to verify that I am authorized to practice in your location for each session.'),
+
+    h2('3. Your physical location at each session'),
+    p('At the start of every session, you will confirm your physical location (state and the address you are at). You agree to:'),
+    bullet('Tell me at the start of each session where you are physically located.'),
+    bullet('Notify me before a session if your location has changed since the last session.'),
+    bullet('Notify me if you plan to travel, even briefly, to a state or country where I am not licensed, so we can plan for that period together.'),
+    bullet('Be in a stationary, private location during session — not in transit, not in a moving vehicle, not in a public place where the session can be overheard or seen.'),
+
+    h2('4. Technology used'),
+    p('The practice uses SimplePractice telehealth, which:'),
+    bullet('Uses encryption that meets HIPAA technical safeguards.'),
+    bullet('Is covered by a Business Associate Agreement (BAA) between SimplePractice and the practice.'),
+    bullet('Does not record sessions; recording is never enabled by either party.'),
+    p('If a different platform is needed for any reason, I will tell you in advance and confirm that the platform meets the same standards.'),
+
+    h2('5. Equipment and environment'),
+    p('To make telehealth work clinically and safely, you agree to:'),
+    bullet('Use a device with a working camera, microphone, and reliable internet.'),
+    bullet('Use a private, quiet space where others cannot overhear.'),
+    bullet('Keep the camera positioned so I can see your face clearly.'),
+    bullet('Tell me if anyone else is present in the room or within earshot.'),
+    bullet('Use the device on a private, password-protected network where possible (avoid open public Wi-Fi for sessions).'),
+
+    h2('6. Benefits of telehealth'),
+    p('Telehealth removes geographic barriers, reduces travel time, and allows continuity of care when in-person meetings are not practical. For many clients, video sessions are clinically equivalent to in-person therapy and support more consistent attendance.'),
+
+    h2('7. Risks and limitations'),
+    p('Telehealth is not equivalent to in-person care in every respect. Specific risks include:'),
+    bullet('Technology failures (lost internet, software crashes, audio or video issues) interrupting a session.'),
+    bullet('Reduced clinical information compared with in-person sessions (less body language, no shared physical space).'),
+    bullet('Privacy risks if your environment is not secure (others overhearing, devices recording without your knowledge, account compromise on your end).'),
+    bullet('A slower or less effective response to a behavioral emergency than in-person care would allow.'),
+    bullet('The possibility that telehealth turns out not to be clinically appropriate for your needs and that we need to transition to in-person care or refer to a local clinician.'),
+
+    h2('8. When telehealth may not be appropriate'),
+    p('Telehealth is generally not appropriate as the primary modality when:'),
+    bullet('Active suicidal or homicidal ideation with plan or intent is present.'),
+    bullet('Severe substance use, eating disorder, or psychotic symptoms require a higher level of monitoring.'),
+    bullet('You do not have reliable, private access to suitable technology.'),
+    bullet('In-person assessment is required by clinical judgment or applicable law.'),
+    p('If, in my clinical judgment, telehealth is no longer appropriate for your care, I will discuss alternatives with you, which may include referral to a local in-person clinician or a higher level of care.'),
+
+    h2('9. Confidentiality and recording'),
+    p('The confidentiality protections that apply to in-person sessions apply to telehealth sessions, including the limits described in the Informed Consent for Psychotherapy (mandatory reporting, imminent risk to self or others, court order, and similar). In addition:'),
+    bullet('I will not record audio or video of any session.'),
+    bullet('You agree not to record audio or video of sessions, take screenshots, or share session content without my written consent.'),
+    bullet('If I learn that recording has occurred without consent, we will discuss next steps and I may decline to continue telehealth.'),
+    bullet('Brief written notes ("progress notes") are kept in your record as they would be after an in-person session.'),
+
+    h2('10. Emergency procedures'),
+    p('Before our first telehealth session, you will provide:'),
+    bullet('Your physical address for that session.'),
+    bullet('The name and phone number of an emergency contact who is local to your physical location.'),
+    bullet('The name and phone number of the nearest emergency department to your physical location.'),
+    p('If a behavioral emergency arises during or between sessions:'),
+    bullet('Call or text 988 (Suicide and Crisis Lifeline) or 911.'),
+    bullet('Go to the nearest emergency department.'),
+    bullet('If clinically indicated and consistent with my legal duties, I may contact your designated emergency contact or local emergency services to assist.'),
+    p('If we lose connection during a session, I will attempt to reconnect by phone for at least 15 minutes. If I cannot reach you and I am concerned for your safety, I may contact your designated emergency contact or local emergency services.'),
+
+    h2('11. Backup plan for technology problems'),
+    p('If video fails during a session, we will:'),
+    bullet('Attempt to restore the video connection.'),
+    bullet('If that fails, continue the remainder of the session by phone using the number you provided.'),
+    bullet('Confirm next steps together and, if the session cannot reasonably be completed, reschedule at no charge.'),
+
+    h2('12. Fees and billing for telehealth'),
+    p(`Telehealth sessions are billed at the same rates as in-person sessions (${FEE_50} per 50-minute session). Place of service codes 10 (telehealth provided in the patient's home) or 02 (telehealth other than the patient's home) are used on superbills. The practice does not bill insurance directly; out-of-network superbills are provided on request.`),
+
+    h2('13. Cancellation, no-show, and lateness'),
+    p(`The cancellation policy in the Informed Consent for Psychotherapy applies equally to telehealth: at least ${C.billing.late_cancel_hours} hours' notice is required to cancel or reschedule without charge. Later cancellations and no-shows are billed at the full session fee.`),
+
+    h2('14. Right to withdraw consent'),
+    p('You may withdraw consent for telehealth at any time, in writing or verbally, without affecting your right to discuss in-person care or referral to a local clinician. Withdrawal applies to future sessions and does not change anything about care already provided.'),
+
+    h2('15. Acknowledgment'),
+    p('By signing below, I acknowledge that:'),
+    bullet('I have read this Telehealth Informed Consent and had the opportunity to ask questions.'),
+    bullet('I understand the benefits, risks, and limitations of telehealth.'),
+    bullet('I agree to the terms above, including providing my physical location at each session and the emergency contact information requested.'),
+    bullet(`I consent to receive psychotherapy services via telehealth from ${C.identity.clinician_with_credentials}.`),
+
+    spacer(),
+    h2('Pre-session information'),
+    preSessionTable,
+
+    spacer(),
+    hr(),
+    h2('Signatures'),
+    ...signatureBlock('Client signature'),
+    ...signatureBlock('Printed name'),
+    ...signatureBlock('Parent / guardian signature (if client is a minor)'),
+    ...signatureBlock(`Clinician (${C.identity.clinician_with_credentials})`),
+  ];
+}
+
 // ---------- run ----------
 (async () => {
   await writeDoc('Informed_Consent.docx', buildDoc('Informed Consent', consentChildren()));
@@ -550,4 +697,5 @@ function irpChildren() {
   await writeDoc('Good_Faith_Estimate.docx', buildDoc('Good Faith Estimate', gfeChildren()));
   await writeDoc('HIPAA_Security_Risk_Assessment.docx', buildDoc('HIPAA Security Risk Assessment', riskChildren()));
   await writeDoc('Incident_and_Breach_Response_Plan.docx', buildDoc('Incident & Breach Response Plan', irpChildren()));
+  await writeDoc('Telehealth_Consent.docx', buildDoc('Telehealth Consent', telehealthChildren()));
 })();
