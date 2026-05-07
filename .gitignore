@@ -43,3 +43,9 @@ GitHub_Setup.md
 
 # Claude Code session metadata
 .claude/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
