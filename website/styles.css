@@ -344,6 +344,37 @@ a.card:hover {
   border: 0;
 }
 
+/* Skip-to-content link: hidden until focused via keyboard */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: var(--accent-dk, #1f3a5f);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  z-index: 1000;
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 8px;
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Consistent, visible focus for keyboard users across all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--accent-dk, #1f3a5f);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+/* Suppress the default UA outline for mouse users (focus-visible handles keyboard) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* ---------- FAQ ---------- */
 .faq-item {
   border-bottom: 1px solid var(--border);

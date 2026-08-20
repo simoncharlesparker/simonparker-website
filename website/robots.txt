@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /images/og-card.png
 
 Sitemap: https://simonparker.com/sitemap.xml
