@@ -186,17 +186,51 @@ DOCX_MARKERS = {
     "HIPAA_Security_Risk_Assessment.docx": ["Security Risk Assessment", "FileVault", "SimplePractice", "BAA"],
     "Incident_and_Breach_Response_Plan.docx": ["Incident", "Breach", "60 calendar days", "tabletop"],
 }
+def _docx_structure_problem(path):
+    """Return a reason string if this is not a structurally sound .docx, else None.
+
+    This replaces an earlier call out to
+    /sessions/great-busy-edison/mnt/.skills/skills/docx/scripts/office/validate.py,
+    a path inside a throwaway Claude session container that has never existed
+    on this machine. The subprocess simply failed, "PASSED" was never in its
+    (empty) stdout, and so every document was reported as not validating. The
+    documents were fine the whole time; the check was not.
+
+    A .docx is a zip holding an Open Packaging Convention part set. Checking
+    that the archive opens, that the parts Word requires are present, and that
+    the main document part is well-formed XML catches real corruption (a
+    truncated write, a half-finished build) without depending on anything
+    outside the standard library.
+    """
+    import xml.etree.ElementTree as ET
+    REQUIRED = ["[Content_Types].xml", "_rels/.rels", "word/document.xml"]
+    try:
+        with zipfile.ZipFile(path) as z:
+            if z.testzip() is not None:
+                return "archive has a corrupt member"
+            names = set(z.namelist())
+            missing = [part for part in REQUIRED if part not in names]
+            if missing:
+                return "missing required part(s): " + ", ".join(missing)
+            try:
+                ET.fromstring(z.read("word/document.xml"))
+            except ET.ParseError as e:
+                return f"word/document.xml is not well-formed XML: {e}"
+    except FileNotFoundError:
+        return "file does not exist"
+    except zipfile.BadZipFile:
+        return "not a valid zip archive"
+    return None
+
+
 for fname, needles in DOCX_MARKERS.items():
     f = COMP / fname
     # validate
-    r = subprocess.run(
-        ["python3", "/sessions/great-busy-edison/mnt/.skills/skills/docx/scripts/office/validate.py", str(f)],
-        capture_output=True, text=True
-    )
-    if "PASSED" in r.stdout:
+    problem = _docx_structure_problem(f)
+    if problem is None:
         ok(f"{fname} validates")
     else:
-        fail(f"{fname} does NOT validate")
+        fail(f"{fname} does NOT validate: {problem}")
     # content
     with zipfile.ZipFile(f) as z:
         body = z.read("word/document.xml").decode("utf-8", errors="ignore")
@@ -320,7 +354,6 @@ try:
     _phone = PC.C["contact"]["phone"]
     _email = PC.C["contact"]["email"]
     _city = PC.C["contact"]["office_city"]
-    _open_from = PC.C["contact"]["office_open_from"]
     _voice = PC.VOICE_PARAGRAPH
     _cbc_attr = PC.C["frameworks"]["cbc"]["attribution"]
     _ipt_attr = PC.C["frameworks"]["ipt"]["attribution"]
@@ -338,7 +371,8 @@ if _legal is not None:
     # 8b. Website pages pick up the right values from the constants
     # Each row: (filename, [(value, label), ...])
     WEB_EXPECT = {
-        "index.html":   [(_legal, "legal_entity")],
+        "index.html":   [(_legal, "legal_entity"),
+                         (_city, "office city")],
         "about.html":   [(_lic_pa, "PA licence #"),
                          (_lic_tx, "TX licence #"),
                          (_lic_ca, "CA licence #"),
@@ -351,10 +385,14 @@ if _legal is not None:
         "faq.html":     [(_lic_pa, "PA licence #"),
                          (_lic_tx, "TX licence #"),
                          (_lic_ca, "CA licence #")],
+        # contact.html deliberately asserts no office city and no opening
+        # date. Commit 86f4468 retired the "In-person in Pittsburgh from
+        # summer 2026" line sitewide; this check went on demanding it, which
+        # is why it has been failing ever since. The city assertion now runs
+        # against index.html, whose JSON-LD postal address does state
+        # Pittsburgh, so the guard survives where the claim actually lives.
         "contact.html": [(_email, "email"),
-                         (_phone, "phone"),
-                         (_city, "office city"),
-                         (_open_from, "office open-from")],
+                         (_phone, "phone")],
     }
     for page, items in WEB_EXPECT.items():
         txt = (WEB / page).read_text(encoding="utf-8")

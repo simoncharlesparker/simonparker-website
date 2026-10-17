@@ -43,3 +43,6 @@ GitHub_Setup.md
 
 # Claude Code session metadata
 .claude/
+
+# Document backups (local safety copies of client paperwork, never tracked)
+docs-backup-*/
