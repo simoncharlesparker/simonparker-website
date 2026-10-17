@@ -1,7 +1,7 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for Simon Parker Therapy, PLLC. Edit values here, then run `npm --prefix tools run build` and `python3 tools/verify.py`. Anything marked 'locked' should only be changed with deliberate intent, as it is referenced in voice/branding contracts.",
+  "_comment": "SINGLE SOURCE OF TRUTH for Simon Parker Therapy, LLC. Edit values here, then run `npm --prefix tools run build` and `python3 tools/verify.py`. Anything marked 'locked' should only be changed with deliberate intent, as it is referenced in voice/branding contracts.",
   "identity": {
-    "legal_entity": "Simon Parker Therapy, PLLC",
+    "legal_entity": "Simon Parker Therapy, LLC",
     "display_name": "Simon Parker Therapy",
     "clinician_first_name": "Simon",
     "clinician_last_name": "Parker",
@@ -114,8 +114,8 @@
   "voice_paragraph_locked": "I'm a British therapist, and let's be honest, British people are not exactly famous for spilling our feelings. If talking openly feels unnatural, that's okay. I'm used to it. You won't get judgment or a wall of therapist-speak here. Just a thoughtful space to be honest, reflect, and grow.",
   "taglines": {
     "hero_short": "Therapy for adults in high-pressure roles, or going through a stressful chapter.",
-    "footer_tagline": "Therapy for adults in high-pressure roles, or going through a stressful chapter. Telehealth across Pennsylvania, Texas, and California. In-person in Pittsburgh from summer 2026.",
-    "meta_description": "Therapy with Simon Parker, LCSW. Ten years specializing in trauma and PTSD. Telehealth across Pennsylvania, Texas, and California. In-person in Pittsburgh from summer 2026."
+    "footer_tagline": "Therapy for adults in high-pressure roles, or going through a stressful chapter. Telehealth across Pennsylvania, Texas, and California.",
+    "meta_description": "Therapy with Simon Parker, LCSW. Ten years specializing in trauma and PTSD. Telehealth across Pennsylvania, Texas, and California."
   },
   "crisis": {
     "line_short": "If you are in crisis, call or text 988.",
@@ -135,6 +135,10 @@
     "no_show_fee_usd": 185,
     "good_faith_estimate_required": true
   },
+  "analytics": {
+    "_doc": "Cloudflare Web Analytics. Cookie-free, collects no personal data and sets no identifiers, which is why it is the only analytics considered safe to run on clinical pages here. The beacon token is NOT a secret: it is public in page source. Get it from the Cloudflare dashboard under Web Analytics > the simonparker.com site > Manage site > the JS snippet, and paste it below. While it is empty the build script emits no beacon and the site stays analytics-free. Do not also enable Cloudflare's automatic injection in the dashboard, or every page view is counted twice.",
+    "cloudflare_beacon_token": ""
+  },
   "cpt_codes": {
     "diagnostic_eval": "90791",
     "individual_45min": "90834",
@@ -147,7 +151,7 @@
   "brand": {
     "primary_font": "Source Serif Pro",
     "ui_font": "Inter",
-    "copyright_holder": "Simon Parker Therapy, PLLC",
+    "copyright_holder": "Simon Parker Therapy, LLC",
     "copyright_year_start": 2026
   }
 }

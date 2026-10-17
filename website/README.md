@@ -1,6 +1,6 @@
 # Simon Parker Therapy: Website
 
-Static placeholder site for Simon Parker Therapy, PLLC (Pittsburgh, opening summer 2026).
+Static site for Simon Parker Therapy, LLC (Pittsburgh, PA). Live at https://simonparker.com.
 
 ## Pages
 - `index.html`: Home

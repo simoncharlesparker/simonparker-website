@@ -1,4 +1,4 @@
-// Build all five compliance documents for Simon Parker Therapy, PLLC.
+// Build all five compliance documents for Simon Parker Therapy, LLC.
 // Sources ALL practice strings (names, licences, NPI, fees, framework
 // attributions, phone, email, niche language) from tools/practice_constants.json
 // via the practice_constants.js helper. To edit the practice's focus, voice,

@@ -1,6 +1,6 @@
 # Simon Parker Therapy Website
 
-Source for [simonparker.com](https://simonparker.com), the web presence for Simon Parker Therapy, PLLC. Private practice based in Pittsburgh with telehealth across Pennsylvania, Texas, and California.
+Source for [simonparker.com](https://simonparker.com), the web presence for Simon Parker Therapy, LLC. Private practice based in Pittsburgh with telehealth across Pennsylvania, Texas, and California.
 
 ## What's here
 
@@ -48,4 +48,4 @@ cd website && python3 -m http.server 8000
 
 ## Content license
 
-All copy and images © Simon Parker Therapy, PLLC. Private repository.
+All copy and images © Simon Parker Therapy, LLC. Private repository.

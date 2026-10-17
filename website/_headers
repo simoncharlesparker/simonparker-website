@@ -30,13 +30,17 @@
   #                                                 used for button margins.
   #   font-src 'self' fonts.gstatic.com             Google Fonts webfont files.
   #   img-src 'self' data:                          Local images + inline SVG data: URIs.
-  #   script-src 'self' 'unsafe-inline'             Only the inline nav-toggle onclick.
-  #                                                 No external JS is loaded anywhere.
-  #   connect-src 'self' api.web3forms.com          AJAX/fetch to Web3Forms for the contact form.
+  #   script-src 'self' 'unsafe-inline'             The inline nav-toggle onclick, plus
+  #     static.cloudflareinsights.com               the Cloudflare Web Analytics beacon.
+  #                                                 The beacon is the only external JS, it is
+  #                                                 cookie-free, and it loads only once a token
+  #                                                 is set in practice_constants.json.
+  #   connect-src 'self' api.web3forms.com          AJAX/fetch to Web3Forms for the contact form,
+  #     cloudflareinsights.com                      and where the analytics beacon POSTs its hit.
   #   form-action 'self' api.web3forms.com          Submitting <form> to Web3Forms.
   #   frame-ancestors 'none'                        Not embeddable in iframes.
   #   base-uri 'self'                               Lock down <base href> hijacking.
-  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com; form-action 'self' https://api.web3forms.com; frame-ancestors 'none'; base-uri 'self'; upgrade-insecure-requests
 
 # Cache static assets aggressively; HTML for a short time only (so edits
 # appear quickly after a deploy).

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | Simon Parker Therapy</title>
+<meta name="description" content="That page doesn't exist. Links to the main pages of Simon Parker Therapy.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!--
+  Standalone page: every URL here is root-absolute, because this file is
+  served in place of any missing path (e.g. /old/page). Relative links
+  would resolve against that path and break. For the same reason it is
+  deliberately NOT in build_website.js's PAGES list, and its footer names
+  no legal entity, so there is nothing here to drift out of date.
+-->
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<header class="site-header">
+  <div class="container">
+    <nav class="nav" aria-label="Primary">
+      <a href="/" class="brand">Simon Parker Therapy</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" onclick="this.nextElementSibling.classList.toggle('open');this.setAttribute('aria-expanded',this.nextElementSibling.classList.contains('open'));">Menu</button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/approach.html">Approach</a></li>
+        <li><a href="/fees.html">Fees</a></li>
+        <li><a href="/for-teams.html">For businesses</a></li>
+        <li><a href="/faq.html">FAQ</a></li>
+        <li><a href="/contact.html" class="nav-cta">Get in touch</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <div class="container">
+    <div class="page-header">
+      <div class="eyebrow">Error 404</div>
+      <h1>That page isn't here.</h1>
+    </div>
+
+    <div class="prose">
+      <p>The link was probably mistyped, or the page has moved since it was last shared. Nothing has gone wrong at your end.</p>
+      <p>Most people arriving here are looking for one of these:</p>
+      <ul>
+        <li><a href="/approach.html">How I work</a>, and the two frameworks I use.</li>
+        <li><a href="/fees.html">Fees and insurance</a>, including out-of-network superbills.</li>
+        <li><a href="/faq.html">Frequently asked questions</a>.</li>
+        <li><a href="/contact.html">Booking a free 15-minute call</a>.</li>
+      </ul>
+      <p>If you followed a link from somewhere else and it brought you here, I'd be glad to know, so I can fix it. A one-line email to <a href="mailto:info@simonparker.com">info@simonparker.com</a> is plenty.</p>
+    </div>
+
+    <div class="callout sp-top-lg">
+      <h2>If you are in crisis.</h2>
+      <p>This practice is not a crisis service. If you are in crisis right now, call or text <a href="tel:988">988</a> (Suicide and Crisis Lifeline), call 911, or go to your nearest emergency department. Veterans: press 1 after 988 for the Veterans Crisis Line.</p>
+    </div>
+
+    <p class="sp-top-lg"><a href="/" class="btn btn-primary">Back to the home page</a></p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <div>In a crisis? Call or text <a href="tel:988">988</a> (Suicide &amp; Crisis Lifeline).</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

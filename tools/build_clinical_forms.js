@@ -1,4 +1,4 @@
-// Build clinical forms (intake packet) for Simon Parker Therapy, PLLC.
+// Build clinical forms (intake packet) for Simon Parker Therapy, LLC.
 // Output into ../clinical_forms/
 //
 // 8 files:

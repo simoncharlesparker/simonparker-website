@@ -140,6 +140,27 @@ function buildFooter() {
   ].join('\n');
 }
 
+// Analytics --------------------------------------------------------------
+
+// Cloudflare Web Analytics. Emits the beacon only when a token is set in
+// practice_constants.json; otherwise it leaves a comment saying so, and the
+// site ships with no analytics and no third-party requests at all.
+//
+// If you set a token here, do NOT also switch on Cloudflare's automatic
+// injection in the dashboard: the page would load two beacons and every
+// view would be counted twice.
+//
+// The beacon needs two Content-Security-Policy allowances, already present
+// in website/_headers: static.cloudflareinsights.com in script-src (the
+// script itself) and cloudflareinsights.com in connect-src (where it POSTs).
+function buildAnalytics() {
+  const token = (C.analytics && C.analytics.cloudflare_beacon_token) || '';
+  if (!token) {
+    return '<!-- No analytics configured. Set analytics.cloudflare_beacon_token in tools/practice_constants.json and rebuild. -->';
+  }
+  return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${token}"}'></script>`;
+}
+
 // Marker-based replacement ------------------------------------------------
 
 function replaceInline(html) {
@@ -234,13 +255,17 @@ function buildPage(filename) {
   // 4. footer block
   const { out: afterFooter, touched: footerTouched } = replaceBlock(afterNav, 'footer', buildFooter());
 
-  if (afterFooter === before) {
+  // 5. analytics block
+  const { out: afterAnalytics, touched: analyticsTouched } = replaceBlock(afterFooter, 'analytics', buildAnalytics());
+
+  if (afterAnalytics === before) {
     console.log(`  ✓ ${filename}  (unchanged)`);
   } else {
-    fs.writeFileSync(full, afterFooter);
+    fs.writeFileSync(full, afterAnalytics);
     const flags = [];
     if (navTouched) flags.push('nav');
     if (footerTouched) flags.push('footer');
+    if (analyticsTouched) flags.push('analytics');
     console.log(`  ✓ ${filename}  (updated${flags.length ? `: ${flags.join(' + ')}` : ''})`);
   }
 }
