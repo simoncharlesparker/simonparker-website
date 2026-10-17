@@ -40,6 +40,7 @@ compliance/
 
 # Local helper docs (not part of the website)
 GitHub_Setup.md
+Website_PR_Description.md
 
 # Claude Code session metadata
 .claude/
