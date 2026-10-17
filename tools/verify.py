@@ -385,14 +385,15 @@ if _legal is not None:
         "faq.html":     [(_lic_pa, "PA licence #"),
                          (_lic_tx, "TX licence #"),
                          (_lic_ca, "CA licence #")],
-        # contact.html deliberately asserts no office city and no opening
-        # date. Commit 86f4468 retired the "In-person in Pittsburgh from
-        # summer 2026" line sitewide; this check went on demanding it, which
-        # is why it has been failing ever since. The city assertion now runs
-        # against index.html, whose JSON-LD postal address does state
-        # Pittsburgh, so the guard survives where the claim actually lives.
+        # No page asserts an opening date any more: commit 86f4468 retired
+        # the "In-person in Pittsburgh from summer 2026" line sitewide, and
+        # this check went on demanding it, which is why it failed for weeks.
+        # The office city is still asserted, on both pages that state it:
+        # index.html's JSON-LD postal address, and the contact page's
+        # details list.
         "contact.html": [(_email, "email"),
-                         (_phone, "phone")],
+                         (_phone, "phone"),
+                         (_city, "office city")],
     }
     for page, items in WEB_EXPECT.items():
         txt = (WEB / page).read_text(encoding="utf-8")
