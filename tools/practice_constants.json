@@ -135,6 +135,14 @@
     "no_show_fee_usd": 185,
     "good_faith_estimate_required": true
   },
+  "insurance": {
+    "_doc": "Practice strategy: in-network with select PA commercial plans; out-of-network in TX, CA, and with all other PA plans. Update in_network_panels[STATE] when a panel actually approves. Build scripts and IC §4 read from these arrays so a single SSOT change propagates. Set billing.accepts_insurance to true once any panel is active. This repository is public: panels in progress and credentialing dates are tracked privately and must not be added here.",
+    "in_network_panels": {
+      "PA": [],
+      "TX": [],
+      "CA": []
+    }
+  },
   "analytics": {
     "_doc": "Cloudflare Web Analytics. Cookie-free, collects no personal data and sets no identifiers, which is why it is the only analytics considered safe to run on clinical pages here. The beacon token is NOT a secret: it is public in page source. Get it from the Cloudflare dashboard under Web Analytics > the simonparker.com site > Manage site > the JS snippet, and paste it below. While it is empty the build script emits no beacon and the site stays analytics-free. Do not also enable Cloudflare's automatic injection in the dashboard, or every page view is counted twice.",
     "cloudflare_beacon_token": ""

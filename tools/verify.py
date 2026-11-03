@@ -71,6 +71,7 @@ EXPECTED = [
     COMP / "Good_Faith_Estimate.docx",
     COMP / "HIPAA_Security_Risk_Assessment.docx",
     COMP / "Incident_and_Breach_Response_Plan.docx",
+    COMP / "Telehealth_Consent.docx",
     ROOT / "Practice_Voice_and_Bio.md",
     ROOT / "Security_Reminders.ics",
     ROOT / "Simon_Parker_Therapy_Practice_Tracker.xlsx",
@@ -185,6 +186,13 @@ DOCX_MARKERS = {
     "Good_Faith_Estimate.docx":         ["Good Faith Estimate", "No Surprises Act", "$185"],
     "HIPAA_Security_Risk_Assessment.docx": ["Security Risk Assessment", "FileVault", "SimplePractice", "BAA"],
     "Incident_and_Breach_Response_Plan.docx": ["Incident", "Breach", "60 calendar days", "tabletop"],
+    # build_docs.js has generated six documents since commit dbc516f, but this
+    # dict listed five. Telehealth Consent therefore sat outside every check
+    # below, which is how it kept the old legal entity on its client signature
+    # page through an entire rename without anything noticing.
+    "Telehealth_Consent.docx": ["Telehealth Informed Consent", "SimplePractice",
+                                "Business Associate Agreement", "988",
+                                "emergency contact", "withdraw consent"],
 }
 def _docx_structure_problem(path):
     """Return a reason string if this is not a structurally sound .docx, else None.
@@ -197,12 +205,14 @@ def _docx_structure_problem(path):
     documents were fine the whole time; the check was not.
 
     A .docx is a zip holding an Open Packaging Convention part set. Checking
-    that the archive opens, that the parts Word requires are present, and that
-    the main document part is well-formed XML catches real corruption (a
-    truncated write, a half-finished build) without depending on anything
-    outside the standard library.
+    that the archive opens, that the parts Word requires are present, that
+    every XML part parses, and that no relationship points at a part the
+    archive does not contain catches real corruption (a truncated write, a
+    half-finished build, an image dropped from the zip) without depending on
+    anything outside the standard library.
     """
     import xml.etree.ElementTree as ET
+    from posixpath import normpath
     REQUIRED = ["[Content_Types].xml", "_rels/.rels", "word/document.xml"]
     try:
         with zipfile.ZipFile(path) as z:
@@ -212,10 +222,33 @@ def _docx_structure_problem(path):
             missing = [part for part in REQUIRED if part not in names]
             if missing:
                 return "missing required part(s): " + ", ".join(missing)
-            try:
-                ET.fromstring(z.read("word/document.xml"))
-            except ET.ParseError as e:
-                return f"word/document.xml is not well-formed XML: {e}"
+            for name in sorted(names):
+                if not (name.endswith(".xml") or name.endswith(".rels")):
+                    continue
+                try:
+                    root = ET.fromstring(z.read(name))
+                except ET.ParseError as e:
+                    return f"{name} is not well-formed XML: {e}"
+                if not name.endswith(".rels"):
+                    continue
+                # A .rels part lives in the _rels/ folder beside the part it
+                # describes, and its internal targets are relative to that
+                # part's own folder. External targets (URLs, mailto:) and
+                # bare anchors point outside the package, so skip those.
+                base = name[: name.rfind("_rels/")]
+                for rel in root:
+                    if rel.get("TargetMode") == "External":
+                        continue
+                    target = rel.get("Target", "")
+                    if not target or target.startswith("#"):
+                        continue
+                    if target.startswith("/"):
+                        resolved = target.lstrip("/")
+                    else:
+                        resolved = normpath(base + target)
+                    if resolved not in names:
+                        return (f"{name}: relationship target is not in the "
+                                f"archive: {target}")
     except FileNotFoundError:
         return "file does not exist"
     except zipfile.BadZipFile:
@@ -436,6 +469,14 @@ if _legal is not None:
         "HIPAA_Security_Risk_Assessment.docx": [
             (_legal, "legal_entity"),
         ],
+        "Telehealth_Consent.docx": [
+            (_legal, "legal_entity"),
+            (_npi, "NPI"),
+            (_lic_pa, "PA licence #"),
+            (_lic_tx, "TX licence #"),
+            (_lic_ca, "CA licence #"),
+            (_fee50, "50-min fee"),
+        ],
         "Incident_and_Breach_Response_Plan.docx": [
             (_legal, "legal_entity"),
             (_phone, "phone"),
@@ -512,8 +553,8 @@ if _legal is not None:
     # 8g. Nothing is using the old hand-entered values that the build
     # scripts should have regenerated. We only guard values that are
     # definitely wrong if they appear; we can't flag every possible
-    # typo, only ones we've actively retired. Currently: none.
-    # (Add entries here if a constant is ever renamed.)
+    # typo, only ones we've actively retired. The one retired value so far
+    # is the old "PLLC" legal entity, guarded in section 9 below.
 
     # Netlify headers file: must include a CSP that allows the Web3Forms
     # form endpoint, otherwise contact form submissions will be blocked in
@@ -574,6 +615,68 @@ if _legal is not None:
             ok(f"website/{page}: has footer block markers")
         else:
             fail(f"website/{page}: missing footer block markers")
+
+
+# --- 9. The retired legal name must not come back ---
+section("Retired legal name")
+# The practice converted from a Texas PLLC to a Pennsylvania LLC with effect
+# from 2026-09-30: same entity, same EIN, one letter different. That is
+# exactly the kind of change that gets most of the way done and then sits
+# half-finished. Telehealth_Consent.docx kept the old name on its client
+# signature page through the entire rename because nothing checked that
+# document at all (see DOCX_MARKERS above), and it took a person reading it
+# to catch that. So rather than only asserting that the new name is present
+# where we expect it, assert that the old name is absent from everything the
+# build scripts produce. A stale name then has to fail a check.
+RETIRED_NAME = "PLLC"
+# Records of the conversion itself are the one place the old name belongs, and
+# they are exempted by path so that the check stays absolute everywhere else.
+#
+# The walk below covers generated artefacts only, so some of these paths are
+# not reached today. They are declared anyway: a guard that passes because of
+# what it happens not to look at, rather than because of what it has decided
+# to allow, starts failing the moment someone widens its scope, and whoever
+# widens it then has to work out from scratch which hits were deliberate.
+RETIRED_NAME_EXEMPT = {
+    # What Texas and Pennsylvania actually received, and the worksheet that
+    # names the entity being converted.
+    COMP / "Conversion_Filing_Package_Worksheet.docx",
+    ROOT / "conversion-filings",
+    ROOT / "compressed",
+    # The pre-rename snapshot of all 16 documents, kept as the rollback path
+    # for the 2026-10-17 regeneration. 39 occurrences, all of them the point.
+    ROOT / "docs-backup-2026-10-17",
+    # Narrative records that describe the conversion and are meant to go on
+    # naming the old entity: the handover account, the file index's reference
+    # to the reminders file by its filename, the website PR description, and
+    # the conversion reminder calendar, whose remaining hits are the
+    # conversion events themselves plus a general statement of PA law.
+    ROOT / "HANDOVER.md",
+    ROOT / "FILE_INDEX.md",
+    ROOT / "Website_PR_Description.md",
+    ROOT / "Simon_Parker_Therapy_PLLC_Reminders.ics",
+}
+
+
+def _retired_name_exempt(path: Path) -> bool:
+    return any(q in RETIRED_NAME_EXEMPT for q in (path, *path.parents))
+
+
+for p in sorted(list(WEB.rglob("*.html"))
+                + list(COMP.rglob("*.docx"))
+                + list(CLIN.rglob("*.docx"))):
+    if p.name.startswith("~$"):   # Word lock file, not a document
+        continue
+    rel = p.relative_to(ROOT)
+    if _retired_name_exempt(p):
+        ok(f"{rel}: exempt — record of the conversion filing itself")
+        continue
+    body = _docx_text(p) if p.suffix == ".docx" else p.read_text(encoding="utf-8")
+    if RETIRED_NAME in body:
+        fail(f"{rel}: retired legal name '{RETIRED_NAME}' is back "
+             f"({body.count(RETIRED_NAME)}x) — rebuild it from practice_constants.json")
+    else:
+        ok(f"{rel}: free of the retired '{RETIRED_NAME}' name")
 
 
 # --- Summary ---

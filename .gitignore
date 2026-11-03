@@ -47,3 +47,19 @@ Website_PR_Description.md
 
 # Document backups (local safety copies of client paperwork, never tracked)
 docs-backup-*/
+
+# Practice admin and private reference files (kept locally, never pushed)
+HANDOVER.md
+FILE_INDEX.md
+private-practice-working-reference.md
+discoverability-listings.md
+reviews-ask.md
+conversion-filings/
+compressed/
+pa_blank_forms/
+Conversion_Filing_Package_Worksheet.docx
+Plan_of_Conversion.docx
+Practice_Setup_Cost_Breakdown.docx
+TX_Certificate_of_Conversion.docx
+*.ics
+*.bak-*
