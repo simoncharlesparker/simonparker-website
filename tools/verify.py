@@ -132,7 +132,11 @@ PAGE_SPECIFIC = {
                       'name="state"',
                       'name="message"',
                       'name="contact_method"',
-                      "thank-you.html",
+                      # The form's post-submit redirect. Extensionless,
+                      # because Cloudflare 307s /thank-you.html to
+                      # /thank-you and a redirect hop here would land on
+                      # the confirmation page one step later than needed.
+                      "https://simonparker.com/thank-you",
                       "privacy.html"],
     "privacy.html":  ["Privacy Policy", "HIPAA",
                       "info@simonparker.com"],
