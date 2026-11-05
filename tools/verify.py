@@ -56,6 +56,8 @@ EXPECTED = [
     WEB / "privacy.html",
     WEB / "thank-you.html",
     WEB / "styles.css",
+    WEB / "site.js",
+    WEB / "estimator.js",
     WEB / "README.md",
     WEB / "favicon.svg",
     WEB / "robots.txt",
@@ -110,7 +112,13 @@ PAGE_SPECIFIC = {
                       "Beck and Ellis", "Weissman", "Why I do this", "fifteen years"],
     "fees.html":     ["$185", "Good Faith Estimate", "out-of-network",
                       "What's included", "Sliding scale",
-                      "HSA and FSA", "CPT code 90834"],
+                      "HSA and FSA", "CPT code 90834",
+                      # The out-of-network cost estimator and the script that
+                      # drives it. The `hidden` attribute is asserted too: it
+                      # is what keeps the section from rendering as a dead
+                      # form when scripting is unavailable, and it is an easy
+                      # thing to delete by accident while editing the markup.
+                      'id="estimator"', "estimator.js", "hidden"],
     "for-teams.html":["Thinking Clearly Under Pressure", "$3,500", "$6,500", "$9,500",
                       "Fire, EMS", "Hospitals", "Trading floors", "Law firms",
                       "Trower, Casey, and Dryden", "not positive thinking",
@@ -132,13 +140,29 @@ PAGE_SPECIFIC = {
                       'name="state"',
                       'name="message"',
                       'name="contact_method"',
-                      "thank-you.html",
-                      "privacy.html"],
+                      # The form's post-submit redirect. Extensionless,
+                      # because Cloudflare 307s /thank-you.html to
+                      # /thank-you and a redirect hop here would land on
+                      # the confirmation page one step later than needed.
+                      "https://simonparker.com/thank-you",
+                      # The in-page link to the privacy policy. A link target,
+                      # so extensionless like the rest of the site's internal
+                      # links; spelled as the whole href so that the prose
+                      # phrase "privacy policy" cannot satisfy it.
+                      'href="privacy"'],
     "privacy.html":  ["Privacy Policy", "HIPAA",
                       "info@simonparker.com"],
     "thank-you.html":["noindex", "I've got it",
                       "info@simonparker.com", "988"],
 }
+# The link graph is checked on one more page than PAGES: 404.html. It is
+# deliberately standalone — not in build_website.js's PAGES list, and with
+# root-absolute links throughout, because Cloudflare serves it in place of any
+# missing path and relative links would resolve against that path. That also
+# means no marker or content check below applies to it, so until now nothing
+# verified its links at all. They are checked here.
+LINK_CHECKED = PAGES + ["404.html"]
+
 for page in PAGES:
     txt = (WEB / page).read_text()
     for needle, label in MUST_ALL:
@@ -150,14 +174,44 @@ for page in PAGES:
     for needle in PAGE_SPECIFIC.get(page, []):
         if needle in txt: ok(f"{page}: contains '{needle}'")
         else:             fail(f"{page}: missing '{needle}'")
-    # local link graph
+
+# --- 2b. Local link graph ---
+#
+# Internal page links are extensionless ("about", "/about") because that is
+# what Cloudflare Pages serves; it 307-redirects the .html forms to them. So
+# resolve a link the way Cloudflare does — try the path as given, then the same
+# path with .html appended — rather than requiring the href to name a file on
+# disk verbatim. Asset links (styles.css, favicon.svg, images/*.jpg) still
+# resolve on the first attempt.
+#
+# Resolving both forms means a stale "fees.html" href would now resolve
+# perfectly well, since fees.html really is a file. So the extension has to be
+# ruled out separately, below, or this check would quietly stop noticing the
+# exact regression it used to make impossible.
+for page in LINK_CHECKED:
+    txt = (WEB / page).read_text(encoding="utf-8")
     hrefs = re.findall(r'href="([^"]+)"', txt) + re.findall(r'src="([^"]+)"', txt)
-    for h in hrefs:
-        if h.startswith("#") or h.startswith("mailto:") or h.startswith("tel:") or h.startswith("http"):
-            continue
-        target = (WEB / h).resolve()
-        if not target.exists():
+    internal = [h for h in hrefs
+                if not h.startswith(("#", "mailto:", "tel:", "http"))]
+    for h in internal:
+        # Root-absolute links (404.html uses them throughout) are relative to
+        # the site root, which is WEB. "/" and "" both mean the homepage.
+        rel = h.lstrip("/")
+        candidates = [WEB / rel, WEB / f"{rel}.html"] if rel else [WEB / "index.html"]
+        if not any(c.resolve().is_file() for c in candidates):
             fail(f"{page}: broken local link → {h}")
+    # No internal link may name a page by its .html filename: Cloudflare
+    # 307-redirects that form, so every such link costs the visitor a redirect
+    # hop. Asset links keep their extensions and are not pages, so only the
+    # nine page filenames are rejected.
+    page_urls = {p[:-len(".html")] for p in PAGES}
+    stale = sorted({h for h in internal
+                    if h.endswith(".html") and h.lstrip("/")[:-len(".html")] in page_urls})
+    if stale:
+        fail(f"{page}: internal link(s) still carry .html, which Cloudflare "
+             f"307-redirects → {', '.join(stale)}")
+    else:
+        ok(f"{page}: internal links are extensionless ({len(internal)} links resolve)")
 
 # --- 3. Images ---
 section("Images")
@@ -428,6 +482,23 @@ if _legal is not None:
                          (_phone, "phone"),
                          (_city, "office city")],
     }
+    # 8b-i. The cost estimator quotes money, so its session fee gets an
+    # equality check rather than a substring search. data-session-fee is
+    # rewritten by build_website.js from practice_constants.json; if that
+    # rule is ever dropped, the estimator would go on telling people what
+    # their therapy costs using a fee that no longer exists. A stale figure
+    # in body copy is untidy; a stale figure in a calculator is misleading.
+    _fees_txt = (WEB / "fees.html").read_text(encoding="utf-8")
+    _m = re.search(r'data-session-fee="(\d+)"', _fees_txt)
+    _expected_fee = str(PC.C["fees"]["session_50min_price_usd"])
+    if not _m:
+        fail("fees.html: the estimator has no data-session-fee attribute")
+    elif _m.group(1) != _expected_fee:
+        fail(f"fees.html: estimator data-session-fee is {_m.group(1)}, but "
+             f"practice_constants.json says {_expected_fee} — rebuild")
+    else:
+        ok(f"fees.html: estimator session fee matches the SSOT (${_expected_fee})")
+
     for page, items in WEB_EXPECT.items():
         txt = (WEB / page).read_text(encoding="utf-8")
         for needle, label in items:
@@ -615,6 +686,36 @@ if _legal is not None:
             ok(f"website/{page}: has footer block markers")
         else:
             fail(f"website/{page}: missing footer block markers")
+
+
+# --- 8i. Every page has a cache rule in _headers ---
+section("Cache headers")
+# The _headers cache policy is keyed on the URLs Cloudflare actually serves,
+# which are extensionless, so it cannot be derived from the filenames by
+# pattern. That makes it a hand-maintained list, and a hand-maintained list
+# that mirrors another list will drift. This is the check that stops it.
+#
+# It is worth checking because the failure is invisible: a page with no rule
+# is still served, just with Pages' default max-age=0, and nothing about the
+# site looks wrong. That is exactly how the previous `/*.html` rule went
+# unnoticed from launch — it matched only the .html redirects, never a page.
+_headers_txt = (WEB / "_headers").read_text(encoding="utf-8")
+_rules = set(re.findall(r"^(/\S*)$", _headers_txt, re.M))
+
+for _page in PAGES:
+    _url = "/" if _page == "index.html" else "/" + _page[:-len(".html")]
+    if _url in _rules:
+        ok(f"_headers: {_url} has a cache rule")
+    else:
+        fail(f"_headers: no cache rule for {_url} — it would be served with "
+             f"Cloudflare's default max-age=0 (add '{_url}' to website/_headers)")
+
+# Assets are matched by extension and must keep their long cache.
+for _glob in ("/*.css", "/*.js", "/*.svg", "/images/*"):
+    if _glob in _rules:
+        ok(f"_headers: {_glob} still has a cache rule")
+    else:
+        fail(f"_headers: the {_glob} cache rule has gone")
 
 
 # --- 9. The retired legal name must not come back ---
