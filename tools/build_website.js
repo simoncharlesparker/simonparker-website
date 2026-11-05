@@ -19,14 +19,23 @@ const C = require('./practice_constants');
 const WEB = path.join(__dirname, '..', 'website');
 const PAGES = ['index.html', 'about.html', 'approach.html', 'fees.html', 'for-teams.html', 'faq.html', 'contact.html', 'privacy.html', 'thank-you.html'];
 
+// Nav items carry both the file they live in on disk and the URL the site
+// actually serves it at. Cloudflare Pages serves extensionless URLs and
+// 307-redirects the .html forms to them, so an href of "about.html" costs a
+// redirect hop on every internal click. `page` is the real filename, which is
+// what buildPage() passes in and what the active-page match is keyed on;
+// `href` is the served URL and is what ends up in the markup.
+//
+// The home URL is "/" rather than "index": Cloudflare 307s both /index.html
+// and /index to /, so "/" is the only form that serves the homepage directly.
 const NAV_ITEMS = [
-  { href: 'index.html',      label: 'Home' },
-  { href: 'about.html',      label: 'About' },
-  { href: 'approach.html',   label: 'Approach' },
-  { href: 'fees.html',       label: 'Fees' },
-  { href: 'for-teams.html',  label: C.training.nav_label },
-  { href: 'faq.html',        label: 'FAQ' },
-  { href: 'contact.html',    label: 'Get in touch', cta: true },
+  { page: 'index.html',      href: '/',           label: 'Home' },
+  { page: 'about.html',      href: 'about',       label: 'About' },
+  { page: 'approach.html',   href: 'approach',    label: 'Approach' },
+  { page: 'fees.html',       href: 'fees',        label: 'Fees' },
+  { page: 'for-teams.html',  href: 'for-teams',   label: C.training.nav_label },
+  { page: 'faq.html',        href: 'faq',         label: 'FAQ' },
+  { page: 'contact.html',    href: 'contact',     label: 'Get in touch', cta: true },
 ];
 
 // Map of KEY → current value, for <!--@c:KEY-->...<!--/@c--> replacements.
@@ -82,10 +91,13 @@ const INLINE = {
 
 // Block generators ---------------------------------------------------------
 
-function buildNav(activeHref) {
+// `activeFile` is the filename on disk (e.g. 'about.html'), not the served
+// URL, so the active-page match stays keyed on something that is unambiguous
+// and that the caller already has.
+function buildNav(activeFile) {
   const items = NAV_ITEMS.map(n => {
     const cls = [];
-    if (n.href === activeHref) cls.push('active');
+    if (n.page === activeFile) cls.push('active');
     if (n.cta) cls.push('nav-cta');
     const attr = cls.length ? ` class="${cls.join(' ')}"` : '';
     return `        <li><a href="${n.href}"${attr}>${n.label}</a></li>`;
@@ -94,7 +106,7 @@ function buildNav(activeHref) {
     '<header class="site-header">',
     '  <div class="container">',
     '    <nav class="nav" aria-label="Primary">',
-    `      <a href="index.html" class="brand">${C.identity.display_name}</a>`,
+    `      <a href="/" class="brand">${C.identity.display_name}</a>`,
     '      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" onclick="this.nextElementSibling.classList.toggle(\'open\');this.setAttribute(\'aria-expanded\',this.nextElementSibling.classList.contains(\'open\'));">Menu</button>',
     '      <ul class="nav-links" id="nav-links">',
     items,
@@ -119,12 +131,12 @@ function buildFooter() {
     '      </div>',
     '      <div>',
     '        <h3>Explore</h3>',
-    '        <a href="about.html">About</a>',
-    '        <a href="approach.html">Approach</a>',
-    '        <a href="fees.html">Fees</a>',
-    `        <a href="for-teams.html">${C.training.nav_label}</a>`,
-    '        <a href="faq.html">FAQ</a>',
-    '        <a href="contact.html">Contact</a>',
+    '        <a href="about">About</a>',
+    '        <a href="approach">Approach</a>',
+    '        <a href="fees">Fees</a>',
+    `        <a href="for-teams">${C.training.nav_label}</a>`,
+    '        <a href="faq">FAQ</a>',
+    '        <a href="contact">Contact</a>',
     '      </div>',
     '      <div>',
     '        <h3>Licenses</h3>',

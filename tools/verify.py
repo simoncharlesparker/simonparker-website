@@ -137,12 +137,24 @@ PAGE_SPECIFIC = {
                       # /thank-you and a redirect hop here would land on
                       # the confirmation page one step later than needed.
                       "https://simonparker.com/thank-you",
-                      "privacy.html"],
+                      # The in-page link to the privacy policy. A link target,
+                      # so extensionless like the rest of the site's internal
+                      # links; spelled as the whole href so that the prose
+                      # phrase "privacy policy" cannot satisfy it.
+                      'href="privacy"'],
     "privacy.html":  ["Privacy Policy", "HIPAA",
                       "info@simonparker.com"],
     "thank-you.html":["noindex", "I've got it",
                       "info@simonparker.com", "988"],
 }
+# The link graph is checked on one more page than PAGES: 404.html. It is
+# deliberately standalone — not in build_website.js's PAGES list, and with
+# root-absolute links throughout, because Cloudflare serves it in place of any
+# missing path and relative links would resolve against that path. That also
+# means no marker or content check below applies to it, so until now nothing
+# verified its links at all. They are checked here.
+LINK_CHECKED = PAGES + ["404.html"]
+
 for page in PAGES:
     txt = (WEB / page).read_text()
     for needle, label in MUST_ALL:
@@ -154,14 +166,44 @@ for page in PAGES:
     for needle in PAGE_SPECIFIC.get(page, []):
         if needle in txt: ok(f"{page}: contains '{needle}'")
         else:             fail(f"{page}: missing '{needle}'")
-    # local link graph
+
+# --- 2b. Local link graph ---
+#
+# Internal page links are extensionless ("about", "/about") because that is
+# what Cloudflare Pages serves; it 307-redirects the .html forms to them. So
+# resolve a link the way Cloudflare does — try the path as given, then the same
+# path with .html appended — rather than requiring the href to name a file on
+# disk verbatim. Asset links (styles.css, favicon.svg, images/*.jpg) still
+# resolve on the first attempt.
+#
+# Resolving both forms means a stale "fees.html" href would now resolve
+# perfectly well, since fees.html really is a file. So the extension has to be
+# ruled out separately, below, or this check would quietly stop noticing the
+# exact regression it used to make impossible.
+for page in LINK_CHECKED:
+    txt = (WEB / page).read_text(encoding="utf-8")
     hrefs = re.findall(r'href="([^"]+)"', txt) + re.findall(r'src="([^"]+)"', txt)
-    for h in hrefs:
-        if h.startswith("#") or h.startswith("mailto:") or h.startswith("tel:") or h.startswith("http"):
-            continue
-        target = (WEB / h).resolve()
-        if not target.exists():
+    internal = [h for h in hrefs
+                if not h.startswith(("#", "mailto:", "tel:", "http"))]
+    for h in internal:
+        # Root-absolute links (404.html uses them throughout) are relative to
+        # the site root, which is WEB. "/" and "" both mean the homepage.
+        rel = h.lstrip("/")
+        candidates = [WEB / rel, WEB / f"{rel}.html"] if rel else [WEB / "index.html"]
+        if not any(c.resolve().is_file() for c in candidates):
             fail(f"{page}: broken local link → {h}")
+    # No internal link may name a page by its .html filename: Cloudflare
+    # 307-redirects that form, so every such link costs the visitor a redirect
+    # hop. Asset links keep their extensions and are not pages, so only the
+    # nine page filenames are rejected.
+    page_urls = {p[:-len(".html")] for p in PAGES}
+    stale = sorted({h for h in internal
+                    if h.endswith(".html") and h.lstrip("/")[:-len(".html")] in page_urls})
+    if stale:
+        fail(f"{page}: internal link(s) still carry .html, which Cloudflare "
+             f"307-redirects → {', '.join(stale)}")
+    else:
+        ok(f"{page}: internal links are extensionless ({len(internal)} links resolve)")
 
 # --- 3. Images ---
 section("Images")
