@@ -226,6 +226,13 @@ function replaceAttributeValues(html) {
     { from: /"price":\s*"[1-9]\d+"/g, to: () => `"price": "${FEE_50}"` },
     // 3) og:description on fees.html: "...a flat $nnn session rate..."
     { from: /flat\s+\$\d+\s+session\s+rate/g, to: () => `flat $${FEE_50} session rate` },
+    // 3b) The cost estimator's session fee on fees.html. It lives in a data
+    //     attribute because estimator.js needs it as a number, and because an
+    //     HTML comment marker cannot appear inside an attribute value. Without
+    //     this rule the estimator would keep quoting the old fee after a
+    //     change to practice_constants.json, which is worse than the page
+    //     merely looking stale: it would be telling people the wrong money.
+    { from: /data-session-fee="\d+"/g, to: () => `data-session-fee="${FEE_50}"` },
     // 4) FAQPage answer-text on faq.html:
     //    "...A standard 50-minute individual session is $nnn..."
     { from: /(\d+-minute\s+individual\s+session\s+is\s+)\$\d+/g, to: (_m, prefix) => `${prefix}$${FEE_50}` },

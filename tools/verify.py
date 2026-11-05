@@ -56,6 +56,8 @@ EXPECTED = [
     WEB / "privacy.html",
     WEB / "thank-you.html",
     WEB / "styles.css",
+    WEB / "site.js",
+    WEB / "estimator.js",
     WEB / "README.md",
     WEB / "favicon.svg",
     WEB / "robots.txt",
@@ -110,7 +112,13 @@ PAGE_SPECIFIC = {
                       "Beck and Ellis", "Weissman", "Why I do this", "fifteen years"],
     "fees.html":     ["$185", "Good Faith Estimate", "out-of-network",
                       "What's included", "Sliding scale",
-                      "HSA and FSA", "CPT code 90834"],
+                      "HSA and FSA", "CPT code 90834",
+                      # The out-of-network cost estimator and the script that
+                      # drives it. The `hidden` attribute is asserted too: it
+                      # is what keeps the section from rendering as a dead
+                      # form when scripting is unavailable, and it is an easy
+                      # thing to delete by accident while editing the markup.
+                      'id="estimator"', "estimator.js", "hidden"],
     "for-teams.html":["Thinking Clearly Under Pressure", "$3,500", "$6,500", "$9,500",
                       "Fire, EMS", "Hospitals", "Trading floors", "Law firms",
                       "Trower, Casey, and Dryden", "not positive thinking",
@@ -474,6 +482,23 @@ if _legal is not None:
                          (_phone, "phone"),
                          (_city, "office city")],
     }
+    # 8b-i. The cost estimator quotes money, so its session fee gets an
+    # equality check rather than a substring search. data-session-fee is
+    # rewritten by build_website.js from practice_constants.json; if that
+    # rule is ever dropped, the estimator would go on telling people what
+    # their therapy costs using a fee that no longer exists. A stale figure
+    # in body copy is untidy; a stale figure in a calculator is misleading.
+    _fees_txt = (WEB / "fees.html").read_text(encoding="utf-8")
+    _m = re.search(r'data-session-fee="(\d+)"', _fees_txt)
+    _expected_fee = str(PC.C["fees"]["session_50min_price_usd"])
+    if not _m:
+        fail("fees.html: the estimator has no data-session-fee attribute")
+    elif _m.group(1) != _expected_fee:
+        fail(f"fees.html: estimator data-session-fee is {_m.group(1)}, but "
+             f"practice_constants.json says {_expected_fee} — rebuild")
+    else:
+        ok(f"fees.html: estimator session fee matches the SSOT (${_expected_fee})")
+
     for page, items in WEB_EXPECT.items():
         txt = (WEB / page).read_text(encoding="utf-8")
         for needle, label in items:

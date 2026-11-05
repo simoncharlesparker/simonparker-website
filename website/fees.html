@@ -60,7 +60,7 @@
           <h3>Free 15-minute consultation</h3>
           <p><strong>$0 · phone or video</strong></p>
           <p>A short conversation to hear what's bringing you in, answer your questions about how I work, and decide together whether to book an initial session. The sensible first step.</p>
-          <p><a href="contact" class="arrow">Get in touch →</a></p>
+          <p><a href="contact" class="arrow">Get in touch</a></p>
         </div>
         <div class="card">
           <h3>Individual session (50 min)</h3>
@@ -83,6 +83,64 @@
         <p><strong>Cancellation:</strong> 24 hours' notice, or the full fee applies. Life happens. Tell me as early as you can and we'll usually find a way to reschedule inside the week without a charge.</p>
       </div>
     </div>
+
+    <!-- Out-of-network cost estimator.
+         Hidden by default and revealed by estimator.js, so with scripting off
+         the page simply keeps the prose above, which says the same thing in
+         words, rather than showing a form that cannot work.
+         data-session-fee is rewritten from practice_constants.json on every
+         build (see replaceAttributeValues in tools/build_website.js), so the
+         fee here can never drift from the one quoted further up the page. -->
+    <section class="estimator sp-top-lg" id="estimator"
+             aria-labelledby="estimator-heading"
+             data-session-fee="185" hidden>
+      <h2 id="estimator-heading">What will this actually cost you?</h2>
+      <p class="estimator-intro">Out-of-network reimbursement is genuinely hard to work out, and the arithmetic is the main reason people put off asking. Put your plan&rsquo;s numbers in and you&rsquo;ll get a realistic picture. Everything is worked out in your browser &mdash; nothing is sent anywhere, and nothing is stored.</p>
+
+      <div class="estimator-grid">
+        <div class="estimator-fields">
+          <div class="est-field">
+            <label for="est-deductible">Your out-of-network deductible</label>
+            <div class="est-input"><span class="est-prefix">$</span><input type="text" id="est-deductible" inputmode="numeric" autocomplete="off" placeholder="1,500"></div>
+            <p class="est-hint">Enter 0 if your plan has no out-of-network deductible.</p>
+          </div>
+
+          <div class="est-field">
+            <label for="est-met">How much of it you&rsquo;ve already met</label>
+            <div class="est-input"><span class="est-prefix">$</span><input type="text" id="est-met" inputmode="numeric" autocomplete="off" placeholder="0"></div>
+          </div>
+
+          <div class="est-field">
+            <label for="est-rate">Reimbursement rate after the deductible</label>
+            <div class="est-input"><input type="text" id="est-rate" inputmode="numeric" autocomplete="off" placeholder="60"><span class="est-suffix">%</span></div>
+            <p class="est-hint">Most PPO and POS plans fall between 40% and 70%.</p>
+          </div>
+
+          <div class="est-field">
+            <label for="est-allowed">What your plan allows per session <span class="est-optional">optional</span></label>
+            <div class="est-input"><span class="est-prefix">$</span><input type="text" id="est-allowed" inputmode="numeric" autocomplete="off"></div>
+            <p class="est-hint">Insurers reimburse a percentage of their own &ldquo;allowed amount&rdquo;, which is often lower than the fee. This is the single biggest reason estimates come in high. Leave it blank and I&rsquo;ll assume they allow the full fee.</p>
+          </div>
+
+          <div class="est-field">
+            <label for="est-frequency">How often you expect to meet</label>
+            <select id="est-frequency">
+              <option value="52">Weekly</option>
+              <option value="26">Fortnightly</option>
+              <option value="12">Monthly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="estimator-output">
+          <div class="est-result" id="est-result" role="status" aria-live="polite">
+            <p class="est-placeholder">Enter your deductible to see an estimate.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="estimator-note"><strong>This is an estimate, not a quote.</strong> It assumes your plan covers outpatient mental health out of network, that CPT 90834 is a covered code, and that no session limit or pre-authorisation applies. Deductibles usually reset each year. Your insurer is the only one who can tell you what you will actually be reimbursed &mdash; the questions to ask them are above.</p>
+    </section>
 
     <section class="sp-top-lg">
       <h2>What's included. What isn't.</h2>
@@ -151,5 +209,7 @@
 <!--@block:analytics-->
 <!-- No analytics configured. Set analytics.cloudflare_beacon_token in tools/practice_constants.json and rebuild. -->
 <!--/@block:analytics-->
+<script src="site.js" defer></script>
+<script src="estimator.js" defer></script>
 </body>
 </html>

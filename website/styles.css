@@ -16,6 +16,49 @@
   --gutter: clamp(18px, 4vw, 40px);
   --radius: 6px;
   --max: 1080px;
+
+  /* ---- Added in the 2026-11 craft pass ------------------------------------
+     The palette, fonts and the four tokens above are unchanged. What follows
+     gives the site a rhythm it did not have: a type scale with real contrast
+     between levels, a spacing scale so vertical gaps are chosen rather than
+     improvised, and shared elevation and easing so every raised surface and
+     every transition agrees with the others. ----------------------------- */
+
+  /* Fluid type scale. Each step is a clamp() so the jump between a heading
+     and body copy stays proportionate from a 320px phone to a wide desktop,
+     instead of collapsing to near-uniform size on small screens. */
+  --step--1: clamp(0.84rem, 0.82rem + 0.10vw, 0.90rem);
+  --step-0:  clamp(1.00rem, 0.97rem + 0.16vw, 1.08rem);
+  --step-1:  clamp(1.14rem, 1.07rem + 0.34vw, 1.33rem);
+  --step-2:  clamp(1.38rem, 1.24rem + 0.68vw, 1.80rem);
+  --step-3:  clamp(1.70rem, 1.44rem + 1.25vw, 2.45rem);
+  --step-4:  clamp(2.10rem, 1.62rem + 2.35vw, 3.40rem);
+
+  /* Vertical rhythm. --space-section is the gap between major sections and is
+     deliberately large: the single biggest reason the old pages read as one
+     undifferentiated column was that sections were only as far apart as
+     paragraphs were. */
+  --space-xs: 6px;
+  --space-s: 14px;
+  --space-m: 26px;
+  --space-l: clamp(36px, 5vw, 60px);
+  --space-section: clamp(64px, 8vw, 112px);
+
+  /* Elevation. Two-layer shadows (a tight contact shadow plus a wide soft
+     one) read as a physical object on a warm background; a single large blur
+     reads as grey haze. Tinted toward the page's own ink rather than black. */
+  --shadow-sm: 0 1px 2px rgba(43, 42, 38, 0.05), 0 2px 6px rgba(43, 42, 38, 0.04);
+  --shadow-md: 0 2px 4px rgba(43, 42, 38, 0.05), 0 10px 24px rgba(43, 42, 38, 0.07);
+  --shadow-lg: 0 4px 8px rgba(43, 42, 38, 0.05), 0 22px 48px rgba(43, 42, 38, 0.11);
+
+  /* Motion. --ease-out is a decelerating curve: fast to start, settling at
+     the end, which is what makes an entrance feel like arrival rather than a
+     fade. Durations are short enough never to make a visitor wait. */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.30, 1);
+  --dur-fast: 160ms;
+  --dur: 240ms;
+  --dur-slow: 640ms;
 }
 
 * { box-sizing: border-box; }
@@ -794,4 +837,515 @@ a.path-tile:hover {
   a.path-tile:hover {
     transform: none;
   }
+}
+
+/* ==========================================================================
+   Craft pass — 2026-11
+   --------------------------------------------------------------------------
+   Everything above this line is the original stylesheet and is unchanged
+   apart from the tokens added to :root. This section applies those tokens:
+   a real type scale, sectional rhythm, shared elevation, and a restrained
+   entrance animation. It is additive, so any rule here can be removed
+   without leaving the earlier styles broken.
+
+   The guiding constraint: people arrive at a therapy site anxious, often on
+   a phone, often late at night. Nothing here may delay reading, move content
+   under a cursor, or draw attention to itself. Motion is used once per
+   section, in one direction, and never repeats.
+   ========================================================================== */
+
+/* ---------- Typography: apply the scale ---------- */
+
+body { font-size: var(--step-0); }
+
+h1 { font-size: var(--step-4); letter-spacing: -0.02em; line-height: 1.08; }
+h2 { font-size: var(--step-3); letter-spacing: -0.012em; line-height: 1.15; }
+h3 { font-size: var(--step-1); letter-spacing: -0.005em; line-height: 1.3; }
+
+/* Optical correction: Lora's uppercase and lining figures sit slightly low
+   against Inter's. Only applies where the two meet in the same line. */
+h1, h2, h3 { text-wrap: balance; }
+
+/* Long-form copy wants a slightly tighter measure than the grid allows, so
+   a paragraph never runs past the distance an eye can track back. */
+.prose p,
+.prose li { max-width: 64ch; }
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 { margin-top: 1.6em; }
+.prose h2:first-child { margin-top: 0; }
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--text-dim);
+  max-width: 38ch;
+  text-wrap: pretty;
+}
+
+::selection { background: var(--highlight); color: var(--text); }
+
+/* ---------- Header: settle on scroll ---------- */
+
+.site-header {
+  transition: box-shadow var(--dur) var(--ease),
+              background-color var(--dur) var(--ease);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  backdrop-filter: saturate(1.4) blur(10px);
+}
+/* Added by site.js once the page has scrolled past the hero's first fold.
+   The border alone was invisible against a scrolled page; a shallow shadow
+   separates the bar from content passing underneath it. */
+.site-header.is-scrolled {
+  box-shadow: var(--shadow-sm);
+  border-bottom-color: transparent;
+}
+
+.nav-links a {
+  position: relative;
+  padding: 2px 0;
+}
+/* Underline grows from the left rather than appearing all at once. The
+   active page keeps it permanently, so the nav states are distinguishable
+   without relying on the colour change alone. */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1.5px;
+  background: var(--accent-dk);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease-out);
+}
+.nav-links a:hover::after,
+.nav-links a:focus-visible::after,
+.nav-links a.active::after { transform: scaleX(1); }
+.nav-links a.nav-cta::after { display: none; }
+
+/* ---------- Links in prose ---------- */
+
+.prose a:not(.btn):not(.arrow):not(.path-tile) {
+  background-image: linear-gradient(var(--accent) 0 0);
+  background-size: 100% 1px;
+  background-position: 0 1.05em;
+  background-repeat: no-repeat;
+  border-bottom: none;
+  transition: background-size var(--dur) var(--ease-out),
+              color var(--dur) var(--ease);
+}
+.prose a:not(.btn):not(.arrow):not(.path-tile):hover {
+  background-size: 100% 2px;
+  color: var(--text);
+}
+
+/* The → in "See fees →" should lead when the link is hovered. The glyph is
+   drawn by ::after rather than sitting in the copy, so it can move.
+   Spacing is a margin, not a flex gap: `.path-tile .arrow` already sets
+   display:inline-block at a higher specificity, so a gap would silently do
+   nothing in exactly the place the arrows are most used. */
+.arrow { border-bottom: none; }
+.arrow::after {
+  content: "\2192";
+  display: inline-block;
+  margin-left: 0.4em;
+  transition: transform var(--dur) var(--ease-out);
+}
+a:hover > .arrow::after,
+a.arrow:hover::after,
+.path-tile:hover .arrow::after,
+.card:hover .arrow::after { transform: translateX(4px); }
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  padding: 13px 24px;
+  font-size: var(--step-0);
+  letter-spacing: 0.005em;
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              transform var(--dur-fast) var(--ease);
+  will-change: transform;
+}
+.btn-primary { box-shadow: var(--shadow-sm); }
+.btn-primary:hover { box-shadow: var(--shadow-md); }
+.btn:active { transform: translateY(1px); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(48px, 7vw, 88px);
+  position: relative;
+  overflow: hidden;
+}
+/* A very low-contrast wash behind the hero, warmer at the top. It is not a
+   pattern or an image: just enough tonal movement that the fold does not
+   read as flat paper, at a contrast low enough never to compete with text. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 70% at 18% 8%, rgba(240, 233, 219, 0.75) 0%, rgba(240, 233, 219, 0) 62%),
+    radial-gradient(52% 64% at 92% 86%, rgba(234, 238, 230, 0.8) 0%, rgba(234, 238, 230, 0) 60%);
+  pointer-events: none;
+}
+.hero > .container { position: relative; }
+
+.hero h1 { margin-bottom: 0.32em; }
+.hero-subtitle {
+  margin: 14px 0 var(--space-l);
+  padding-left: 16px;
+  border-left: 2px solid var(--accent);
+}
+.cta-row { gap: 12px; align-items: center; }
+
+.hero-image {
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 4 / 5;
+}
+.hero-image img { transition: transform 1.2s var(--ease-out); }
+
+/* ---------- Sectional rhythm ---------- */
+
+/* The old hand-tuned top margins are superseded by the section padding
+   below; leaving both would double the gap. Scoped to sections so the
+   utility still works where it is used on a .callout inside a page. */
+main > section.sp-top-lg { margin-top: 0; }
+
+/* The single most important rule in this file. Major sections now sit a
+   deliberate distance apart rather than a paragraph's distance. */
+main > section { padding-block: var(--space-section); }
+main > section.hero { padding-block: clamp(56px, 8vw, 104px) clamp(48px, 7vw, 88px); }
+main > section + section { padding-top: 0; }
+
+/* A band is full-bleed: it runs edge to edge and carries its own background,
+   so a page reads as a sequence of distinct places rather than one scroll.
+   Its .container keeps the text at the same measure as everywhere else. */
+.band {
+  padding-block: var(--space-section) !important;
+  background: var(--bg-alt);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+main > section.band + section { padding-top: var(--space-section); }
+
+.band--quiet { background: var(--highlight); }
+
+/* ---------- Pull quote ---------- */
+
+/* For the one or two lines on a page that deserve to be read on their own.
+   Set at display size in Lora, with the measure held tight so it scans as a
+   statement rather than a paragraph that happens to be large. */
+.pullquote {
+  font-family: 'Lora', Georgia, serif;
+  font-size: var(--step-3);
+  line-height: 1.24;
+  letter-spacing: -0.012em;
+  color: var(--text);
+  max-width: 22ch;
+  margin: 0;
+  text-wrap: balance;
+}
+.pullquote-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-m);
+  align-items: start;
+}
+@media (min-width: 860px) {
+  .pullquote-grid { grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); }
+}
+.pullquote-body { color: var(--text-dim); }
+.pullquote-body p { max-width: 54ch; }
+.pullquote-body p:last-child { margin-bottom: 0; }
+
+/* ---------- Cards and path tiles ---------- */
+
+.card,
+.path-tile {
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              transform var(--dur) var(--ease-out);
+}
+a.card:hover,
+a.path-tile:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+.card h3,
+.path-tile h3 { margin-bottom: 10px; }
+.path-tile p { color: var(--text-dim); margin-bottom: 0; }
+.path-tile .arrow { margin-top: 16px; }
+
+.path-tiles,
+.cards { gap: clamp(16px, 2vw, 24px); margin-top: var(--space-l); }
+
+/* ---------- Credibility strip ---------- */
+
+.credibility {
+  margin: 0;
+  padding: var(--space-l) 0;
+  gap: clamp(20px, 3vw, 40px);
+}
+.credibility .item .value {
+  font-size: var(--step-1);
+  line-height: 1.3;
+}
+.credibility .item .label { margin-bottom: 8px; }
+
+/* ---------- FAQ ---------- */
+
+.faq summary {
+  padding-block: 2px;
+  transition: color var(--dur) var(--ease);
+}
+.faq summary:hover { color: var(--accent-dk); }
+.faq summary::after { transition: transform var(--dur) var(--ease-out); }
+.faq details[open] summary::after { transform: rotate(180deg); }
+
+/* ---------- Forms ---------- */
+
+.form-card, .direct-contact, .contact-card { box-shadow: var(--shadow-sm); }
+
+/* ---------- Entrance animation ----------------------------------------
+   Gated three ways, because content that never appears is far worse than
+   content that appears without ceremony:
+
+     1. The `js-anim` class is set by site.js, so with JS broken or blocked
+        nothing is ever hidden — the CSS below cannot match.
+     2. site.js refuses to set it when the visitor asks for reduced motion.
+     3. The media query here forces everything visible regardless, in case
+        the preference changes after load.
+
+   The movement is 12px and happens once. Sections animate as a whole; only
+   grid children stagger, and only by 60ms, which is enough to read as
+   sequence without anyone waiting on the last one. ---------------------- */
+
+html.js-anim [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+}
+html.js-anim [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Mobile refinements ---------- */
+
+@media (max-width: 820px) {
+  .site-header { padding: 14px 0; }
+  .hero-subtitle { margin-bottom: var(--space-m); }
+  .cta-row .btn { flex: 1 1 auto; text-align: center; }
+  .pullquote { max-width: none; }
+}
+
+@media (max-width: 520px) {
+  .card, .path-tile { padding: 22px; }
+  .hero-image { aspect-ratio: 1 / 1; }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Belt and braces: even if `js-anim` were somehow set, nothing stays
+     hidden and nothing moves. */
+  html.js-anim [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero-image img,
+  .arrow::after { transition: none !important; }
+  a.card:hover,
+  a.path-tile:hover,
+  .btn:active { transform: none !important; }
+}
+
+/* ==========================================================================
+   Out-of-network cost estimator (fees page)
+   ========================================================================== */
+
+.estimator {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(24px, 4vw, 44px);
+}
+.estimator > h2 { margin-top: 0; }
+.estimator-intro { color: var(--text-dim); max-width: 64ch; }
+
+.estimator-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 4vw, 44px);
+  margin-top: var(--space-l);
+  align-items: start;
+}
+@media (min-width: 860px) {
+  .estimator-grid { grid-template-columns: 1fr 1fr; }
+  /* The result tracks the fields on long pages, so the numbers stay in view
+     while the reader is still changing them. */
+  .estimator-output { position: sticky; top: 104px; }
+}
+
+.est-field { margin-bottom: var(--space-m); }
+.est-field:last-child { margin-bottom: 0; }
+.est-field label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.est-optional {
+  font-weight: 400;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-left: 6px;
+}
+
+/* The $ and % sit inside the field's border so the unit is unambiguous
+   without putting it in the placeholder, where it would vanish on typing. */
+.est-input {
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.est-input:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(122, 139, 111, 0.18);
+}
+.est-input input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text);
+}
+.est-input input:focus { outline: none; }
+.est-prefix,
+.est-suffix {
+  display: flex;
+  align-items: center;
+  padding: 0 4px 0 14px;
+  color: var(--text-dim);
+  font-size: 1rem;
+}
+.est-suffix { padding: 0 14px 0 4px; }
+
+.estimator select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--text);
+}
+.estimator select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(122, 139, 111, 0.18);
+}
+
+.est-hint {
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  line-height: 1.45;
+  margin: 8px 0 0;
+  max-width: 48ch;
+}
+
+/* ---- Results ---- */
+
+.est-result {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(20px, 3vw, 28px);
+  box-shadow: var(--shadow-sm);
+}
+.est-placeholder {
+  color: var(--text-dim);
+  font-style: italic;
+  margin: 0;
+}
+
+.est-block { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.est-block:first-child { padding-top: 0; }
+.est-block:last-of-type { border-bottom: none; padding-bottom: 0; }
+
+.est-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.est-figure {
+  font-family: 'Lora', Georgia, serif;
+  font-size: var(--step-2);
+  line-height: 1.15;
+  color: var(--text);
+  /* Tabular figures stop the number jittering sideways as it is retyped. */
+  font-variant-numeric: tabular-nums;
+}
+.est-figure span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  letter-spacing: 0;
+}
+.est-detail {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* The figure the reader actually came for. */
+.est-block--key .est-figure { color: var(--accent-dk); font-size: var(--step-3); }
+
+.est-caveat {
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.estimator-note {
+  margin: var(--space-l) 0 0;
+  padding-top: var(--space-m);
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  max-width: 76ch;
+}
+
+@media (max-width: 520px) {
+  .est-figure { font-size: var(--step-1); }
+  .est-block--key .est-figure { font-size: var(--step-2); }
 }
