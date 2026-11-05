@@ -46,10 +46,53 @@
 # appear quickly after a deploy).
 /*.css
   Cache-Control: public, max-age=604800
+/*.js
+  Cache-Control: public, max-age=604800
 /*.svg
   Cache-Control: public, max-age=604800
 /images/*
   Cache-Control: public, max-age=2592000
 
+# Pages are listed one by one, and deliberately so.
+#
+# The rule here used to be `/*.html`, which never once applied to a page.
+# Cloudflare Pages serves this site at extensionless URLs and 307-redirects
+# the .html forms to them, so `/*.html` only ever matched the redirect. Every
+# actual page was served with Pages' default `max-age=0, must-revalidate`,
+# and the intended five-minute cache had no effect from the day the site
+# went up. Verified against production before this was changed:
+#
+#   /about        public, max-age=0, must-revalidate     <- the page
+#   /about.html   public, max-age=300, must-revalidate   <- the redirect
+#
+# A single `/*` rule placed above the asset rules would also work, but only
+# if Cloudflare resolves overlapping rules last-match-wins. Rather than
+# depend on that, each page gets its own rule: no rule here overlaps another
+# or touches the asset rules above, so the result is the same whatever the
+# precedence order turns out to be.
+#
+# Adding a page means adding a line. tools/verify.py fails if this list and
+# build_website.js's PAGES ever disagree, so that cannot be forgotten.
+/
+  Cache-Control: public, max-age=300, must-revalidate
+/about
+  Cache-Control: public, max-age=300, must-revalidate
+/approach
+  Cache-Control: public, max-age=300, must-revalidate
+/fees
+  Cache-Control: public, max-age=300, must-revalidate
+/for-teams
+  Cache-Control: public, max-age=300, must-revalidate
+/faq
+  Cache-Control: public, max-age=300, must-revalidate
+/contact
+  Cache-Control: public, max-age=300, must-revalidate
+/privacy
+  Cache-Control: public, max-age=300, must-revalidate
+/thank-you
+  Cache-Control: public, max-age=300, must-revalidate
+
+# Kept only so the .html redirects are themselves cacheable. It does not,
+# and cannot, apply to a page; see above.
 /*.html
   Cache-Control: public, max-age=300, must-revalidate

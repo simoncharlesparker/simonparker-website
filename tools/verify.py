@@ -688,6 +688,36 @@ if _legal is not None:
             fail(f"website/{page}: missing footer block markers")
 
 
+# --- 8i. Every page has a cache rule in _headers ---
+section("Cache headers")
+# The _headers cache policy is keyed on the URLs Cloudflare actually serves,
+# which are extensionless, so it cannot be derived from the filenames by
+# pattern. That makes it a hand-maintained list, and a hand-maintained list
+# that mirrors another list will drift. This is the check that stops it.
+#
+# It is worth checking because the failure is invisible: a page with no rule
+# is still served, just with Pages' default max-age=0, and nothing about the
+# site looks wrong. That is exactly how the previous `/*.html` rule went
+# unnoticed from launch — it matched only the .html redirects, never a page.
+_headers_txt = (WEB / "_headers").read_text(encoding="utf-8")
+_rules = set(re.findall(r"^(/\S*)$", _headers_txt, re.M))
+
+for _page in PAGES:
+    _url = "/" if _page == "index.html" else "/" + _page[:-len(".html")]
+    if _url in _rules:
+        ok(f"_headers: {_url} has a cache rule")
+    else:
+        fail(f"_headers: no cache rule for {_url} — it would be served with "
+             f"Cloudflare's default max-age=0 (add '{_url}' to website/_headers)")
+
+# Assets are matched by extension and must keep their long cache.
+for _glob in ("/*.css", "/*.js", "/*.svg", "/images/*"):
+    if _glob in _rules:
+        ok(f"_headers: {_glob} still has a cache rule")
+    else:
+        fail(f"_headers: the {_glob} cache rule has gone")
+
+
 # --- 9. The retired legal name must not come back ---
 section("Retired legal name")
 # The practice converted from a Texas PLLC to a Pennsylvania LLC with effect
