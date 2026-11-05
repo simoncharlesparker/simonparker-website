@@ -136,7 +136,7 @@
     "good_faith_estimate_required": true
   },
   "insurance": {
-    "_doc": "Practice strategy: in-network with select PA commercial plans; out-of-network in TX, CA, and with all other PA plans. Update in_network_panels[STATE] when a panel actually approves. Build scripts and IC §4 read from these arrays so a single SSOT change propagates. Set billing.accepts_insurance to true once any panel is active. This repository is public: panels in progress and credentialing dates are tracked privately and must not be added here.",
+    "_doc": "Practice strategy: in-network with select PA commercial plans; out-of-network in TX, CA, and with all other PA plans. Update in_network_panels[STATE] when a panel actually approves. build_docs.js, build_clinical_forms.js and IC §4 read from these arrays so a single SSOT change propagates. build_website.js does NOT: the public site states the out-of-network arrangement in hand-written prose on fees.html and twice on faq.html (visible copy and FAQPage JSON-LD), and its fees-page cost estimator assumes out-of-network throughout. Adding a panel here will update the documents and leave the website wrong. See HANDOVER.md, ‘When a panel actually approves’. Set billing.accepts_insurance to true once any panel is active. This repository is public: panels in progress and credentialing dates are tracked privately and must not be added here.",
     "in_network_panels": {
       "PA": [],
       "TX": [],
