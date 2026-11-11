@@ -1,0 +1,21 @@
+// Cloudflare Workers configuration for simonparker.com.
+//
+// This is the file Cloudflare proposed in its "Add Cloudflare Workers
+// configuration" pull request (May 2026), with one addition:
+// assets.not_found_handling. Without it a Worker answers a missing URL with
+// an empty 404; "404-page" makes it serve website/404.html instead.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "simonparker-website",
+  "compatibility_date": "2026-05-07",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "website",
+    "not_found_handling": "404-page"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
