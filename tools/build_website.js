@@ -170,7 +170,8 @@ function buildAnalytics() {
   if (!token) {
     return '<!-- No analytics configured. Set analytics.cloudflare_beacon_token in tools/practice_constants.json and rebuild. -->';
   }
-  return `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${token}"}'></script>`;
+  // Same form as the snippet Cloudflare's dashboard hands out (type="module").
+  return `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${token}"}'></script>`;
 }
 
 // Marker-based replacement ------------------------------------------------
