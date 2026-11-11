@@ -63,3 +63,7 @@ Practice_Setup_Cost_Breakdown.docx
 TX_Certificate_of_Conversion.docx
 *.ics
 *.bak-*
+
+# Wrangler (Cloudflare Workers) local state
+.wrangler
+.dev.vars*
