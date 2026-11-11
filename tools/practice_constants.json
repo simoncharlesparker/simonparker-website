@@ -145,7 +145,7 @@
   },
   "analytics": {
     "_doc": "Cloudflare Web Analytics. Cookie-free, collects no personal data and sets no identifiers, which is why it is the only analytics considered safe to run on clinical pages here. The beacon token is NOT a secret: it is public in page source. Get it from the Cloudflare dashboard under Web Analytics > the simonparker.com site > Manage site > the JS snippet, and paste it below. While it is empty the build script emits no beacon and the site stays analytics-free. Do not also enable Cloudflare's automatic injection in the dashboard, or every page view is counted twice.",
-    "cloudflare_beacon_token": ""
+    "cloudflare_beacon_token": "8b80d00111b74a5a9383285f330f3db0"
   },
   "cpt_codes": {
     "diagnostic_eval": "90791",
