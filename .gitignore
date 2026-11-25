@@ -49,6 +49,7 @@ Website_PR_Description.md
 docs-backup-*/
 
 # Practice admin and private reference files (kept locally, never pushed)
+Practice Admin/
 HANDOVER.md
 FILE_INDEX.md
 private-practice-working-reference.md
