@@ -201,10 +201,9 @@ function replaceAttributeValues(html) {
     // domain so any stale hardcoded href values get rewritten on rebuild.
     { from: /mailto:[A-Za-z0-9._%+-]+@(?:simonparker|simonparkertherapy)\.com/g, to: `mailto:${C.contact.email}` },
     // Framework attributions can appear in <meta name="description">
-    // (Old "Trower, Jones, and Dryden" retained as a migration fallback in
-    //  case any legacy prose is rediscovered; current attribution is
-    //  Beck and Ellis, driven from practice_constants.json.)
-    { from: /Trower,\s*Jones,?\s*and\s*Dryden/g, to: C.frameworks.cbc.attribution },
+    // (Attribution is Beck and Ellis, driven from practice_constants.json.
+    //  "Trower, Jones, and Dryden" is NOT rewritten: it is the deliberate
+    //  book citation for Cognitive Behavioural Counselling in Action, 3rd ed.)
     { from: /Beck\s+and\s+Ellis/g, to: C.frameworks.cbc.attribution },
     { from: /Weissman,\s*Markowitz,?\s*and\s*Klerman/g, to: C.frameworks.ipt.attribution },
     // ---- Session-fee drift prevention ----

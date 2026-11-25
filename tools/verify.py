@@ -121,7 +121,7 @@ PAGE_SPECIFIC = {
                       'id="estimator"', "estimator.js", "hidden"],
     "for-teams.html":["Thinking Clearly Under Pressure", "$3,500", "$6,500", "$9,500",
                       "Fire, EMS", "Hospitals", "Trading floors", "Law firms",
-                      "Trower, Casey, and Dryden", "not positive thinking",
+                      "Trower, Jones, and Dryden (3rd ed., Sage, 2015)", "not positive thinking",
                       "isn't therapy", "scoping call",
                       "simon-parker-portrait.jpg", "in person",
                       "fifteen years", "I'm British",
