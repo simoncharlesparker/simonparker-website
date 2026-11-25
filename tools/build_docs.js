@@ -685,7 +685,6 @@ function telehealthChildren() {
     h2('Signatures'),
     ...signatureBlock('Client signature'),
     ...signatureBlock('Printed name'),
-    ...signatureBlock('Parent / guardian signature (if client is a minor)'),
     ...signatureBlock(`Clinician (${C.identity.clinician_with_credentials})`),
   ];
 }
